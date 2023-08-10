@@ -17,6 +17,7 @@
 		8E5A99262A84FF42000257B2 /* NotesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A99252A84FF42000257B2 /* NotesCollectionViewController.swift */; };
 		8E898F8A2A83996100EFB9D2 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E898F892A83996100EFB9D2 /* DataModel.swift */; };
 		8E9AAC3A2A83EFDA008B3A59 /* DetailTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9AAC392A83EFDA008B3A59 /* DetailTagViewController.swift */; };
+		8EFC43CF2A850410005AF8C7 /* NoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFC43CE2A850410005AF8C7 /* NoteCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		8E5A99252A84FF42000257B2 /* NotesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesCollectionViewController.swift; sourceTree = "<group>"; };
 		8E898F892A83996100EFB9D2 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		8E9AAC392A83EFDA008B3A59 /* DetailTagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTagViewController.swift; sourceTree = "<group>"; };
+		8EFC43CE2A850410005AF8C7 /* NoteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				8E29136E2A83900C00EE9BFB /* SceneDelegate.swift */,
 				8E898F892A83996100EFB9D2 /* DataModel.swift */,
 				8E5A99252A84FF42000257B2 /* NotesCollectionViewController.swift */,
+				8EFC43CE2A850410005AF8C7 /* NoteCollectionViewCell.swift */,
 				8E5A99232A84FF22000257B2 /* NoteViewController.swift */,
 				8E9AAC392A83EFDA008B3A59 /* DetailTagViewController.swift */,
 				8E2913702A83900C00EE9BFB /* ViewController.swift */,
@@ -154,6 +157,7 @@
 				8E898F8A2A83996100EFB9D2 /* DataModel.swift in Sources */,
 				8E5A99262A84FF42000257B2 /* NotesCollectionViewController.swift in Sources */,
 				8E2913712A83900C00EE9BFB /* ViewController.swift in Sources */,
+				8EFC43CF2A850410005AF8C7 /* NoteCollectionViewCell.swift in Sources */,
 				8E29136D2A83900C00EE9BFB /* AppDelegate.swift in Sources */,
 				8E9AAC3A2A83EFDA008B3A59 /* DetailTagViewController.swift in Sources */,
 				8E29136F2A83900C00EE9BFB /* SceneDelegate.swift in Sources */,
