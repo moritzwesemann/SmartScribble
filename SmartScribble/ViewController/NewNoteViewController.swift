@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewNoteViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
+class NewNoteViewController: UIViewController {
 
     @IBOutlet weak var noteTitleLabel: UITextField!
     
@@ -19,41 +19,24 @@ class NewNoteViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             }
         }
     
-    var newNote: Note?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        noteTitleLabel.delegate = self
-        noteTextView.delegate = self
         
         // Laden Sie vorhandene Notizen
         if let loadedNotes = Note.loadFromFile() {
             notes = loadedNotes
         }
-
-        
-        // Wenn es eine vorhandene Notiz gibt, setze die Werte in die Textfelder
-        if let note = newNote {
-            noteTitleLabel.text = note.title
-            noteTextView.text = note.text
-        } else {
-            // Wenn keine vorhandene Notiz, erstelle eine neue mit leeren Werten und aktuellem Datum
-            newNote = Note(title: "", text: "", tags: [], lastEdited: Date())
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
             super.viewWillDisappear(animated)
+        
+            var newNote = Note(title: noteTitleLabel.text ?? "", text: noteTextView.text, tags: [], lastEdited: Date())
             
-            // Aktualisieren Sie die Note mit den neuesten Daten
-            newNote?.title = noteTitleLabel.text ?? ""
-            newNote?.text = noteTextView.text
-            newNote?.lastEdited = Date()
             
-            if let note = newNote {
-                notes.append(note)
-            }
+                notes.append(newNote)
         print(notes)
         }
     

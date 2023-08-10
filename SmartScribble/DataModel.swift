@@ -8,10 +8,19 @@
 import Foundation
 
 struct Note: Codable {
+    var id: UUID
     var title: String
     var text: String
     var tags: [String]
     var lastEdited: Date
+    
+    init(title: String, text: String, tags: [String], lastEdited: Date) {
+        self.id = UUID() // Generiert eine eindeutige ID
+        self.title = title
+        self.text = text
+        self.tags = tags
+        self.lastEdited = lastEdited
+    }
     
     static var archiveURL: URL{
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in:  .userDomainMask).first!

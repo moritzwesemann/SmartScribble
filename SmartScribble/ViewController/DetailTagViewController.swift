@@ -36,6 +36,18 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            
+            // Laden der Notizen aus der Datei
+            if let loadedNotes = Note.loadFromFile() {
+                notes = loadedNotes
+            }
+            
+            // Durchsucht die Notizen nach dem ausgewählten Tag und zeigt sie an
+            filterAndDisplayNotes()
+        }
+    
     // Durchsucht die Notizen nach dem ausgewählten Tag und zeigt sie an
     func filterAndDisplayNotes() {
         filteredNotes = notes.filter { note in
@@ -62,13 +74,13 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+            if segue.identifier == "showNoteDetail", let destinationVC = segue.destination as? SingleNoteViewController, let indexPath = notesTableView.indexPathForSelectedRow?.row {
+                // Übergeben Sie die ausgewählte Notiz an den neuen View Controller
+                destinationVC.noteID = filteredNotes[indexPath].id
+                print(filteredNotes[indexPath])
+            }
+        }
+    
+
 }

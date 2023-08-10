@@ -41,12 +41,27 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+            super.viewWillAppear(animated)
+            
+            // Laden der Notizen aus der Datei
+            if let savedNotes = Note.loadFromFile() {
+                notes = savedNotes
+            }
 
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedIndexPath, animated: animated)
+            // Tags Array aktualisieren
+            uniqueTags.removeAll()
+            for note in notes {
+                uniqueTags.formUnion(note.tags)
+            }
+            tagsArray = Array(uniqueTags)
+            
+            // Tabelle neu laden
+            tableView.reloadData()
+            
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                tableView.deselectRow(at: selectedIndexPath, animated: animated)
+            }
         }
-    }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

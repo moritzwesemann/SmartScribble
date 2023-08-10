@@ -14,48 +14,56 @@ class SingleNoteViewController: UIViewController {
     
     var note: Note?
     var selectedNoteIndex = 0
+    var noteID: UUID?
     
     var notes: [Note] = [] {
-                didSet {
-                    Note.saveToFiles(notes: notes)
-                }
-            }
-        
+        didSet {
+            Note.saveToFiles(notes: notes)
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        
         if let loadedNotes = Note.loadFromFile() {
-                    notes = loadedNotes
-                    note = notes[selectedNoteIndex]
-                    print(note)
-                }
-        
-        
-        if let note = note{
-            titleTextField.text = note.title
-            textTextView.text = note.text
-        }
-
-    }
-    
-    func extractHashtags(from text: String) -> [String] {
-        var extractedTags: [String] = []
+            notes = loadedNotes
             
-        let words = text.components(separatedBy: .whitespacesAndNewlines)
-        for word in words {
-            if word.hasPrefix("#") {
-                let tag = word.dropFirst() // Entferne das '#'-Zeichen
-                extractedTags.append(String(tag))
+            // Finde die Notiz mit der spezifischen ID
+            if let noteID = noteID {
+                if let index = notes.firstIndex(where: { $0.id == noteID }) {
+                    note = notes[index]
+                    selectedNoteIndex = index // Speichere den Index der ausgewählten Notiz
+                }
+            }
+            
+            if let note = note {
+                titleTextField.text = note.title
+                textTextView.text = note.text
             }
         }
-            
-        return extractedTags
     }
     
-    
-    
-    override func viewWillDisappear(_ animated: Bool) {
+    //Hashtags extrahieren und in Tagsarray speichern und zurückgeben
+        
+        func extractHashtags(from text: String) -> [String] {
+            var extractedTags: [String] = []
+            
+            let words = text.components(separatedBy: .whitespacesAndNewlines)
+            for word in words {
+                if word.hasPrefix("#") {
+                    let tag = word.dropFirst() // Entferne das '#'-Zeichen
+                    extractedTags.append(String(tag))
+                }
+            }
+            
+            return extractedTags
+        }
+        
+        
+        
+        override func viewWillDisappear(_ animated: Bool) {
             super.viewWillDisappear(animated)
             
             if var note = note, let editedTitle = titleTextField.text, let editedText = textTextView.text {
@@ -68,24 +76,13 @@ class SingleNoteViewController: UIViewController {
                 
                 // Aktualisieren Sie die entsprechende Note im Array
                 notes[selectedNoteIndex] = note
-                
+ 
                 // Speichern Sie die aktualisierten Notizen
                 Note.saveToFiles(notes: notes)
             }
-        
-            print(notes[selectedNoteIndex])
+            
         }
-    
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        
+        
     }
-    */
 
-}

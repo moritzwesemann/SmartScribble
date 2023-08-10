@@ -76,7 +76,9 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showNoteDetail", let destinationVC = segue.destination as? SingleNoteViewController, let indexPath = notesCollectionView.indexPathsForSelectedItems?.first {
             // Übergeben Sie die ausgewählte Notiz an den neuen View Controller
-            destinationVC.selectedNoteIndex = indexPath.row
+            destinationVC.noteID = notes[indexPath.row].id
+            print(notes[indexPath.row].id)
+            print(indexPath.row)
         }
     }
 
