@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NoteViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
+class NewNoteViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var noteTitleLabel: UITextField!
     
