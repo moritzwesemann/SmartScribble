@@ -14,20 +14,23 @@ struct Note: Codable {
     var tags: [String]
     var lastEdited: Date
     
+    //Konstruktor
     init(title: String, text: String, tags: [String], lastEdited: Date) {
-        self.id = UUID() // Generiert eine eindeutige ID
+        self.id = UUID() // Generiert automatisch eine eindeutige ID
         self.title = title
         self.text = text
         self.tags = tags
         self.lastEdited = lastEdited
     }
     
+    //Filepath zum anspeichern der Daten
     static var archiveURL: URL{
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in:  .userDomainMask).first!
         let archiveURL = documentsURL.appendingPathComponent("notes").appendingPathExtension("plist")
         return archiveURL
     }
     
+    //Speichern der Notes
     static func saveToFiles(notes: [Note]){
         let encoder = PropertyListEncoder()
         do {
@@ -37,6 +40,8 @@ struct Note: Codable {
             print("Error encoding notes: \(error)")
         }
     }
+    
+    //Laden der Notes
     static func loadFromFile() -> [Note]? {
         guard let noteData = try? Data(contentsOf: Note.archiveURL) else {
             return nil

@@ -12,7 +12,6 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var notesTableView: UITableView!
     
     var selectedTag: String?
-    var tagsArray: [String] = []
     
     var notes: [Note] = [] {
         didSet {
@@ -24,9 +23,10 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(selectedTag)
+        //Setzen des Titles der NavigationBar nach dem Label
         self.navigationItem.title = selectedTag
         
+        //Für die Datensource ist die Klasse selber verantwortlich
         notesTableView.delegate = self
         notesTableView.dataSource = self
         
@@ -55,16 +55,17 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         // Aktualisiert die TableView, um die gefilterten Notizen anzuzeigen
-        print(filteredNotes)
         notesTableView.reloadData()
     }
 
     // MARK: - Table view data source
 
+    //Anzahl der Rows entsprechend den relevanten Notizen
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredNotes.count
     }
 
+    //Erstellen der Zellen
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "noteCell", for: indexPath)
 
@@ -74,6 +75,9 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
+    
+    
+    //Übergabe der NoteID an SingleNoteViewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             if segue.identifier == "showNoteDetail", let destinationVC = segue.destination as? SingleNoteViewController, let indexPath = notesTableView.indexPathForSelectedRow?.row {
                 // Übergeben Sie die ausgewählte Notiz an den neuen View Controller

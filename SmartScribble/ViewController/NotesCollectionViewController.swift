@@ -5,27 +5,23 @@
 //  Created by Moritz on 10.08.23.
 //
 
-// Importiert das UIKit-Framework, um UI-Klassen zu verwenden
 import UIKit
 
-// Definiert die NotesCollectionViewController-Klasse, die die Protokolle für UICollectionView implementiert
+
 class NotesCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    // Outlet für die UICollectionView, in der die Notizen angezeigt werden
+
     @IBOutlet weak var notesCollectionView: UICollectionView!
     
-    // Array von Notizen, die in der Sammlung angezeigt werden sollen
     var notes: [Note] = []
     
-    // Wird aufgerufen, wenn die Ansicht geladen wird; Setup-Code
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setzt den Delegierten und die Datenquelle für die Sammlung
+        //Setzt den Delegierten und die Datenquelle für die Sammlung
         notesCollectionView.delegate = self
         notesCollectionView.dataSource = self
         
-        // Lädt die Notizen aus einer Datei
+        //Lädt die Notizen aus einer Datei
         if let loadedNotes = Note.loadFromFile() {
             notes = loadedNotes
         }
@@ -34,14 +30,14 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             
-            // Aktualisieren Sie die Notizen, wenn der ViewController sichtbar wird
+            //Aktualisieren der Notizen, wenn der ViewController sichtbar wird
             if let loadedNotes = Note.loadFromFile() {
                 notes = loadedNotes
                 notesCollectionView.reloadData() // Löst eine Aktualisierung der Sammlung aus
             }
         }
     
-    // Gibt die Größe für eine Zelle an einer bestimmten Position zurück
+    //Gibt die Größe für eine Zelle an einer bestimmten Position zurück
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 100, height: 200) // Stelle die gewünschte Breite und Höhe ein
     }
@@ -73,6 +69,7 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
         return cell
     }
     
+    //Übergang zu SingleNoteViewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showNoteDetail", let destinationVC = segue.destination as? SingleNoteViewController, let indexPath = notesCollectionView.indexPathsForSelectedItems?.first {
             // Übergeben Sie die ausgewählte Notiz an den neuen View Controller

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		8E29136D2A83900C00EE9BFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29136C2A83900C00EE9BFB /* AppDelegate.swift */; };
 		8E29136F2A83900C00EE9BFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29136E2A83900C00EE9BFB /* SceneDelegate.swift */; };
-		8E2913712A83900C00EE9BFB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2913702A83900C00EE9BFB /* ViewController.swift */; };
+		8E2913712A83900C00EE9BFB /* LabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2913702A83900C00EE9BFB /* LabelsViewController.swift */; };
 		8E2913742A83900C00EE9BFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E2913722A83900C00EE9BFB /* Main.storyboard */; };
 		8E2913762A83900F00EE9BFB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E2913752A83900F00EE9BFB /* Assets.xcassets */; };
 		8E2913792A83900F00EE9BFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E2913772A83900F00EE9BFB /* LaunchScreen.storyboard */; };
@@ -25,7 +25,7 @@
 		8E2913692A83900C00EE9BFB /* SmartScribble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartScribble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E29136C2A83900C00EE9BFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8E29136E2A83900C00EE9BFB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8E2913702A83900C00EE9BFB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8E2913702A83900C00EE9BFB /* LabelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelsViewController.swift; sourceTree = "<group>"; };
 		8E2913732A83900C00EE9BFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8E2913752A83900F00EE9BFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E2913782A83900F00EE9BFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -68,23 +68,55 @@
 		8E29136B2A83900C00EE9BFB /* SmartScribble */ = {
 			isa = PBXGroup;
 			children = (
+				8EF338192A861ED20048111B /* Cells */,
+				8EF3381B2A861EEC0048111B /* Delegates */,
+				8EF3381A2A861EDE0048111B /* Models */,
+				8EF338182A861EB40048111B /* Screens */,
 				8EFC43D02A850E72005AF8C7 /* ViewController */,
-				8E29136C2A83900C00EE9BFB /* AppDelegate.swift */,
-				8E29136E2A83900C00EE9BFB /* SceneDelegate.swift */,
-				8E898F892A83996100EFB9D2 /* DataModel.swift */,
-				8EFC43CE2A850410005AF8C7 /* NoteCollectionViewCell.swift */,
-				8E2913722A83900C00EE9BFB /* Main.storyboard */,
 				8E2913752A83900F00EE9BFB /* Assets.xcassets */,
-				8E2913772A83900F00EE9BFB /* LaunchScreen.storyboard */,
 				8E29137A2A83900F00EE9BFB /* Info.plist */,
 			);
 			path = SmartScribble;
 			sourceTree = "<group>";
 		};
+		8EF338182A861EB40048111B /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				8E2913772A83900F00EE9BFB /* LaunchScreen.storyboard */,
+				8E2913722A83900C00EE9BFB /* Main.storyboard */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		8EF338192A861ED20048111B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8EFC43CE2A850410005AF8C7 /* NoteCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		8EF3381A2A861EDE0048111B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8E898F892A83996100EFB9D2 /* DataModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8EF3381B2A861EEC0048111B /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				8E29136C2A83900C00EE9BFB /* AppDelegate.swift */,
+				8E29136E2A83900C00EE9BFB /* SceneDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		8EFC43D02A850E72005AF8C7 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				8E2913702A83900C00EE9BFB /* ViewController.swift */,
+				8E2913702A83900C00EE9BFB /* LabelsViewController.swift */,
 				8E9AAC392A83EFDA008B3A59 /* DetailTagViewController.swift */,
 				8E5A99232A84FF22000257B2 /* NewNoteViewController.swift */,
 				8E5A99252A84FF42000257B2 /* NotesCollectionViewController.swift */,
@@ -167,7 +199,7 @@
 				8E5A99242A84FF22000257B2 /* NewNoteViewController.swift in Sources */,
 				8E898F8A2A83996100EFB9D2 /* DataModel.swift in Sources */,
 				8E5A99262A84FF42000257B2 /* NotesCollectionViewController.swift in Sources */,
-				8E2913712A83900C00EE9BFB /* ViewController.swift in Sources */,
+				8E2913712A83900C00EE9BFB /* LabelsViewController.swift in Sources */,
 				8EFC43CF2A850410005AF8C7 /* NoteCollectionViewCell.swift in Sources */,
 				8EF338162A850EE70048111B /* SingleNoteViewController.swift in Sources */,
 				8E29136D2A83900C00EE9BFB /* AppDelegate.swift in Sources */,

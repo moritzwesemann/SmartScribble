@@ -7,12 +7,9 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource {
-    
+class LabelsViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    
-
     
     var notes: [Note] = [] {
         didSet{
@@ -27,17 +24,24 @@ class ViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Notes laden, falls welche gespeichert sind
         if let savedNotes = Note.loadFromFile(){
             notes = savedNotes
         }
         
+        //LabesViewController ist für die Datenquelle der tableView verantwortlich
         tableView.dataSource = self
         
-        // Tags Array erstellen um die dann auszugeben in der Label übersicht
+        // Tags Array erstellen (mithilfe eines Sets) um die dann auszugeben in der Label übersicht
         for note in notes {
                 uniqueTags.formUnion(note.tags)
             }
         tagsArray = Array(uniqueTags)
+        
+        //hier noch Array sortieren nach Alphabet
+        
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,27 +61,26 @@ class ViewController: UIViewController, UITableViewDataSource {
             
             // Tabelle neu laden
             tableView.reloadData()
-            
+        
+            //Selection der vorher verwendeten Zeile entfernen
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 tableView.deselectRow(at: selectedIndexPath, animated: animated)
             }
         }
     
-    
+    // Anzahl der Rows
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return uniqueTags.count
     }
     
+    //TableViewCell erstellen
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = tagsArray[indexPath.row]
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showDetail", sender: self)
-    }
-
+    //Übergabe des Labels an DetailTagViewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let destinationVC = segue.destination as? DetailTagViewController,
