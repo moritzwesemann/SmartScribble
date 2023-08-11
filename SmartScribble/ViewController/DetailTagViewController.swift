@@ -54,6 +54,11 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
             return note.tags.contains(selectedTag ?? "")
         }
         
+        //Sortieren der gefilterten Notizen
+        filteredNotes.sort { (note1, note2) -> Bool in
+            return note1.lastEdited > note2.lastEdited
+        }
+        
         // Aktualisiert die TableView, um die gefilterten Notizen anzuzeigen
         notesTableView.reloadData()
     }
@@ -70,7 +75,18 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "noteCell", for: indexPath)
 
         let note = filteredNotes[indexPath.row]
-        cell.textLabel?.text = note.title // Setzt den Titel der jeweiligen Notiz
+        // Setzen Sie die Schriftart und Größe für den Titel
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        cell.textLabel?.text = note.title
+
+        
+        // Formatieren Sie das Datum
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "de_DE") // Setzt das Locale auf Deutsch
+        dateFormatter.dateFormat = "'Last edited:' dd.MM.yyyy HH:mm"
+        // Setzen Sie die Schriftart und Größe für den Untertitel
+        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
+        cell.detailTextLabel?.text = dateFormatter.string(from: note.lastEdited)
 
         return cell
     }

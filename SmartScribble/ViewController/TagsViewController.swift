@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LabelsViewController: UIViewController, UITableViewDataSource {
+class TagsViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
