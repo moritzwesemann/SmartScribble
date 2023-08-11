@@ -38,11 +38,19 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
             }
         }
     
-    //Gibt die Größe für eine Zelle an einer bestimmten Position zurück
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 175, height: 250) // Stelle die gewünschte Breite und Höhe ein
+    //Hashtags extrahieren
+    func extractHashtags(from text: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: "#(\\w+)", options: [])
+            let results = regex.matches(in: text, options: [], range: NSRange(text.startIndex..., in: text))
+            return results.map { String(text[Range($0.range, in: text)!]) }
+        } catch let error {
+            print("Fehler beim Extrahieren von Hashtags: \(error.localizedDescription)")
+            return []
+        }
     }
     
+
     //Abstand zwischen den Zellen einstellen
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -70,12 +78,20 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
         
         // Setzt den Titel und den Textvorschau für die Zelle
         cell.titleLabel.text = note.title
-        cell.textLabel.text = String(note.text.prefix(50)) // Zeigt die ersten 50 Zeichen des Textes
+        cell.contentTextField.text = String(note.text.prefix(230))
+        
+        // Hashtags extrahieren und setzen
+        let hashtags = extractHashtags(from: note.text)
+        cell.tagsLabel.text = hashtags.joined(separator: " ")
+        
 
         // Rahmen und abgerundete Ecken hinzufügen
         cell.layer.borderWidth = 1.0 // Dicke des Rahmens
         cell.layer.borderColor = UIColor.black.cgColor // Farbe des Rahmens
         cell.layer.cornerRadius = 8.0 // Radius der Ecken
+        
+        //Textfeld Interaction entfernt
+        cell.contentTextField.isUserInteractionEnabled = false
         
         return cell
     }

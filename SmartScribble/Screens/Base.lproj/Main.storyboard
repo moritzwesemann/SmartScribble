@@ -21,39 +21,49 @@
                                 <rect key="frame" x="16" y="103" width="361" height="666"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2tK-y8-Lfp">
-                                    <size key="itemSize" width="113" height="128"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UCI-iw-a2R">
+                                    <size key="itemSize" width="176" height="270"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="noteCell" id="gKN-bn-8cc" customClass="NoteCollectionViewCell" customModule="SmartScribble" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="113" height="128"/>
+                                        <rect key="frame" x="92.666666666666671" y="0.0" width="176" height="270"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="URc-wx-q6L">
-                                            <rect key="frame" x="0.0" y="0.0" width="113" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="176" height="270"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pPq-jR-Kmc">
-                                                    <rect key="frame" x="8" y="8" width="175" height="21"/>
+                                                    <rect key="frame" x="8" y="8" width="160" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Labelfsadjlfjöalskflsdaflö" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhE-YW-qsf">
-                                                    <rect key="frame" x="8" y="37" width="175" height="83"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZbH-n4-E39">
+                                                    <rect key="frame" x="8" y="217" width="160" height="45"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fqv-Xq-O6U">
+                                                    <rect key="frame" x="8" y="37" width="160" height="172"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                                    <color key="textColor" systemColor="labelColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
                                         </collectionViewCellContentView>
-                                        <size key="customSize" width="113" height="128"/>
+                                        <size key="customSize" width="176" height="270"/>
                                         <connections>
-                                            <outlet property="textLabel" destination="xhE-YW-qsf" id="WxF-wh-KMz"/>
+                                            <outlet property="contentTextField" destination="Fqv-Xq-O6U" id="cWZ-4c-YE9"/>
+                                            <outlet property="tagsLabel" destination="ZbH-n4-E39" id="T0l-9o-iVg"/>
                                             <outlet property="titleLabel" destination="pPq-jR-Kmc" id="OU5-e6-G2F"/>
                                             <segue destination="8d0-TD-T4z" kind="show" identifier="showNoteDetail" id="deA-f6-keJ"/>
                                         </connections>
@@ -331,8 +341,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wxb-86-ipG"/>
-        <segue reference="Drm-Do-uJV"/>
+        <segue reference="deA-f6-keJ"/>
+        <segue reference="zvB-KB-Jwb"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="folder.fill" catalog="system" width="128" height="96"/>
