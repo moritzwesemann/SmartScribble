@@ -13,6 +13,7 @@
 		8E2913742A83900C00EE9BFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E2913722A83900C00EE9BFB /* Main.storyboard */; };
 		8E2913762A83900F00EE9BFB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E2913752A83900F00EE9BFB /* Assets.xcassets */; };
 		8E2913792A83900F00EE9BFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E2913772A83900F00EE9BFB /* LaunchScreen.storyboard */; };
+		8E3DBBBC2A86601D009030FC /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3DBBBB2A86601D009030FC /* CustomTabBarController.swift */; };
 		8E5A99242A84FF22000257B2 /* NewNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A99232A84FF22000257B2 /* NewNoteViewController.swift */; };
 		8E5A99262A84FF42000257B2 /* NotesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A99252A84FF42000257B2 /* NotesCollectionViewController.swift */; };
 		8E898F8A2A83996100EFB9D2 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E898F892A83996100EFB9D2 /* DataModel.swift */; };
@@ -30,6 +31,7 @@
 		8E2913752A83900F00EE9BFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E2913782A83900F00EE9BFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8E29137A2A83900F00EE9BFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E3DBBBB2A86601D009030FC /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		8E5A99232A84FF22000257B2 /* NewNoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewNoteViewController.swift; path = SmartScribble/ViewController/NewNoteViewController.swift; sourceTree = SOURCE_ROOT; };
 		8E5A99252A84FF42000257B2 /* NotesCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesCollectionViewController.swift; sourceTree = "<group>"; };
 		8E898F892A83996100EFB9D2 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 		8E29136B2A83900C00EE9BFB /* SmartScribble */ = {
 			isa = PBXGroup;
 			children = (
+				8E3DBBBD2A866025009030FC /* TTabBarController */,
 				8EF338192A861ED20048111B /* Cells */,
 				8EF3381B2A861EEC0048111B /* Delegates */,
 				8EF3381A2A861EDE0048111B /* Models */,
@@ -77,6 +80,14 @@
 				8E29137A2A83900F00EE9BFB /* Info.plist */,
 			);
 			path = SmartScribble;
+			sourceTree = "<group>";
+		};
+		8E3DBBBD2A866025009030FC /* TTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				8E3DBBBB2A86601D009030FC /* CustomTabBarController.swift */,
+			);
+			path = TTabBarController;
 			sourceTree = "<group>";
 		};
 		8EF338182A861EB40048111B /* Screens */ = {
@@ -198,6 +209,7 @@
 			files = (
 				8E5A99242A84FF22000257B2 /* NewNoteViewController.swift in Sources */,
 				8E898F8A2A83996100EFB9D2 /* DataModel.swift in Sources */,
+				8E3DBBBC2A86601D009030FC /* CustomTabBarController.swift in Sources */,
 				8E5A99262A84FF42000257B2 /* NotesCollectionViewController.swift in Sources */,
 				8E2913712A83900C00EE9BFB /* TagsViewController.swift in Sources */,
 				8EFC43CF2A850410005AF8C7 /* NoteCollectionViewCell.swift in Sources */,
