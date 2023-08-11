@@ -32,14 +32,25 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
             
             //Aktualisieren der Notizen, wenn der ViewController sichtbar wird
             if let loadedNotes = Note.loadFromFile() {
-                notes = loadedNotes
+                notes = loadedNotes.sorted(by:  { $0.lastEdited > $1.lastEdited })
+                
                 notesCollectionView.reloadData() // Löst eine Aktualisierung der Sammlung aus
             }
         }
     
     //Gibt die Größe für eine Zelle an einer bestimmten Position zurück
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 200) // Stelle die gewünschte Breite und Höhe ein
+        return CGSize(width: 175, height: 250) // Stelle die gewünschte Breite und Höhe ein
+    }
+    
+    //Abstand zwischen den Zellen einstellen
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0 // Dies ist der horizontale Abstand. Sie können den Wert ändern, um den gewünschten Abstand zu erhalten.
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0 // Dies ist der vertikale Abstand. Sie können den Wert ändern, um den gewünschten Abstand zu erhalten.
     }
     
     // Gibt die Anzahl der Abschnitte in der Sammlung zurück

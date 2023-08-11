@@ -70,6 +70,7 @@ class SingleNoteViewController: UIViewController {
                 // Aktualisieren Sie die Eigenschaften der Note mit den bearbeiteten Werten
                 note.title = editedTitle
                 note.text = editedText
+                note.lastEdited = Date()
                 
                 let extractedTags = extractHashtags(from: editedText)
                 note.tags = extractedTags
