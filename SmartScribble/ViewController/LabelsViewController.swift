@@ -38,10 +38,8 @@ class LabelsViewController: UIViewController, UITableViewDataSource {
             }
         tagsArray = Array(uniqueTags)
         
-        //hier noch Array sortieren nach Alphabet
-        
-        
-        
+        //Tagsarray sortieren
+        tagsArray.sort()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +56,9 @@ class LabelsViewController: UIViewController, UITableViewDataSource {
                 uniqueTags.formUnion(note.tags)
             }
             tagsArray = Array(uniqueTags)
+        
+            //Tagsarray sortieren
+            tagsArray.sort()
             
             // Tabelle neu laden
             tableView.reloadData()
