@@ -12,6 +12,8 @@ class SingleNoteViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var textTextView: UITextView!
     
+
+    
     var note: Note?
     var selectedNoteIndex = 0
     var noteID: UUID?
@@ -60,6 +62,22 @@ class SingleNoteViewController: UIViewController {
             
             return extractedTags
         }
+    
+    @IBAction func deleteNoteButton(_ sender: Any) {
+        
+        // Zeige einen Bestätigungs-Alert
+            let alert = UIAlertController(title: "Notiz löschen", message: "Möchten Sie diese Notiz wirklich löschen?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Löschen", style: .destructive, handler: { [weak self] _ in
+                // Lösche die Notiz
+                self?.notes.remove(at: self?.selectedNoteIndex ?? 0)
+                Note.saveToFiles(notes: self?.notes ?? [])
+                self?.navigationController?.popViewController(animated: true)
+            }))
+            
+            present(alert, animated: true, completion: nil)
+    }
+    
         
         
         
@@ -75,11 +93,15 @@ class SingleNoteViewController: UIViewController {
                 let extractedTags = extractHashtags(from: editedText)
                 note.tags = extractedTags
                 
-                // Aktualisieren Sie die entsprechende Note im Array
-                notes[selectedNoteIndex] = note
- 
-                // Speichern Sie die aktualisierten Notizen
-                Note.saveToFiles(notes: notes)
+                
+                //Wenn eine Notiz überarbeit wurde, dann aktualisiere den Code
+                if selectedNoteIndex < notes.count {
+                        // Aktualisieren Sie die entsprechende Note im Array
+                        notes[selectedNoteIndex] = note
+                            
+                        // Speichern Sie die aktualisierten Notizen
+                        Note.saveToFiles(notes: notes)
+                        }
             }
             
         }
