@@ -23,6 +23,19 @@ class CustomTabBarController: UITabBarController {
     }
 
     @objc func handleSwipes(_ sender: UISwipeGestureRecognizer) {
+        
+        guard let currentNavigationController = selectedViewController as? UINavigationController else { return }
+            
+            let currentViewController = currentNavigationController.topViewController
+        
+        print(currentViewController!)
+        
+
+            // Prüfen Sie, ob der aktuelle ViewController der Typ ist, den Sie erlauben wollen
+        if !(currentViewController is NotesCollectionViewController) && !(currentViewController is TagsViewController) {
+            return
+        }
+        
         if sender.direction == .left {
             if self.selectedIndex < (self.tabBar.items?.count ?? 0) - 1 {
                 animateToTab(to: self.selectedIndex + 1)
