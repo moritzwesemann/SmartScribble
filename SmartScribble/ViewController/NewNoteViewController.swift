@@ -11,6 +11,7 @@ class NewNoteViewController: UIViewController {
 
     @IBOutlet weak var noteTitleLabel: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
+    @IBOutlet weak var saveButton: UIButton!
     
     var notes: [Note] = [] {
             didSet {
@@ -23,11 +24,22 @@ class NewNoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Initialer Zustand des Save-Buttons
+                saveButton.isEnabled = !(noteTitleLabel.text?.isEmpty ?? true)
+                
+                // Beobachter hinzufügen
+                noteTitleLabel.addTarget(self, action: #selector(titleDidChange), for: .editingChanged)
+
+        
         // Laden der vorhandnen Notes
         if let loadedNotes = Note.loadFromFile() {
             notes = loadedNotes
         }
     }
+    
+    @objc func titleDidChange() {
+            saveButton.isEnabled = !(noteTitleLabel.text?.isEmpty ?? true)
+        }
     
     func extractHashtags(from text: String) -> [String] {
                 var extractedTags: [String] = []
@@ -43,17 +55,18 @@ class NewNoteViewController: UIViewController {
                 return extractedTags
             }
     
-    override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-        
-        let extractedTags = extractHashtags(from: noteTextView.text)
-        
-        //Speichern der Notiz nach verlassen des Displays
-        let newNote = Note(title: noteTitleLabel.text ?? "", text: noteTextView.text, tags: extractedTags, lastEdited: Date())
-                notes.append(newNote)
-        }
     
-    //hier müssen die Tags noch hinzugefügt werden
+    @IBAction func saveButtonPressed(_ sender: Any) {
+        let extractedTags = extractHashtags(from: noteTextView.text)
+                
+            //Speichern der Notiz nach verlassen des Displays
+            let newNote = Note(title: noteTitleLabel.text ?? "", text: noteTextView.text, tags: extractedTags, lastEdited: Date())
+            notes.append(newNote)
+        
+        NotificationCenter.default.post(name: NSNotification.Name("didAddNewNote"), object: nil)
+        
+        self.dismiss(animated: true, completion: nil)
+    }
     
     
 

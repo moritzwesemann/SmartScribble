@@ -7,13 +7,18 @@
 
 import UIKit
 
-class CustomTabBarController: UITabBarController {
+class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeDown(_:)))
+        swipeDown.delegate = self
+        swipeDown.direction = .down
+        view.addGestureRecognizer(swipeDown)
 
         leftSwipe.direction = .left
         rightSwipe.direction = .right
@@ -21,6 +26,39 @@ class CustomTabBarController: UITabBarController {
         view.addGestureRecognizer(leftSwipe)
         view.addGestureRecognizer(rightSwipe)
     }
+    
+    @objc func handleSwipeDown(_ gesture: UISwipeGestureRecognizer) {
+        guard let currentViewController = selectedViewController else { return }
+
+        var allowSwipe = false
+
+        if let navigationController = currentViewController as? UINavigationController,
+           let topController = navigationController.topViewController {
+
+            if let notesController = topController as? NotesCollectionViewController,
+               notesController.notesCollectionView.contentOffset.y <= 0 {
+                allowSwipe = true
+            } else if let tagsController = topController as? TagsViewController,
+                      tagsController.tableView.contentOffset.y <= 0 {
+                allowSwipe = true
+            } else if let detailTagController = topController as? DetailTagViewController,
+                      detailTagController.notesTableView.contentOffset.y <= 0 {
+                allowSwipe = true
+            }
+        }
+
+        if allowSwipe {
+            if let newNoteVC = self.storyboard?.instantiateViewController(withIdentifier: "newNoteVC") as? NewNoteViewController {
+                newNoteVC.modalPresentationStyle = .pageSheet // Hier haben wir den Stil geändert
+                self.present(newNoteVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            return true
+        }
+
 
     @objc func handleSwipes(_ sender: UISwipeGestureRecognizer) {
         

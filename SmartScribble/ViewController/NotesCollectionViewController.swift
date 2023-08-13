@@ -25,10 +25,27 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
         if let loadedNotes = Note.loadFromFile() {
             notes = loadedNotes
         }
+        
+        //Listen ob eine neue Nachricht erschienen ist
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewNoteAdded), name: NSNotification.Name("didAddNewNote"), object: nil)
+    }
+    
+    @objc func handleNewNoteAdded() {
+        // Aktualisieren Sie hier Ihre TableView oder CollectionView
+        if let loadedNotes = Note.loadFromFile() {
+            notes = loadedNotes.sorted(by: { $0.lastEdited > $1.lastEdited })
+            }
+        notesCollectionView.reloadData() // oder collectionView.reloadData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("didAddNewNote"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
+        
+        print("viewWillAppear called")
             
             //Aktualisieren der Notizen, wenn der ViewController sichtbar wird
             if let loadedNotes = Note.loadFromFile() {

@@ -40,7 +40,30 @@ class TagsViewController: UIViewController, UITableViewDataSource {
         
         //Tagsarray sortieren
         tagsArray.sort()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewNoteAdded), name: NSNotification.Name("didAddNewNote"), object: nil)
     }
+    
+    @objc func handleNewNoteAdded() {
+            // Aktualisieren Sie hier Ihre TableView oder CollectionView
+            if let loadedNotes = Note.loadFromFile() {
+                notes = loadedNotes.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
+                }
+        // Tags Array aktualisieren
+                    uniqueTags.removeAll()
+                    for note in notes {
+                        uniqueTags.formUnion(note.tags)
+                    }
+                    tagsArray = Array(uniqueTags)
+                
+                    //Tagsarray sortieren
+                    tagsArray.sort()
+        tableView.reloadData()
+        }
+    
+    deinit {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name("didAddNewNote"), object: nil)
+        }
     
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)

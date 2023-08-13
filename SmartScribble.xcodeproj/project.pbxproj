@@ -70,7 +70,7 @@
 		8E29136B2A83900C00EE9BFB /* SmartScribble */ = {
 			isa = PBXGroup;
 			children = (
-				8E3DBBBD2A866025009030FC /* TTabBarController */,
+				8E3DBBBD2A866025009030FC /* TabBarController */,
 				8EF338192A861ED20048111B /* Cells */,
 				8EF3381B2A861EEC0048111B /* Delegates */,
 				8EF3381A2A861EDE0048111B /* Models */,
@@ -82,12 +82,12 @@
 			path = SmartScribble;
 			sourceTree = "<group>";
 		};
-		8E3DBBBD2A866025009030FC /* TTabBarController */ = {
+		8E3DBBBD2A866025009030FC /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
 				8E3DBBBB2A86601D009030FC /* CustomTabBarController.swift */,
 			);
-			path = TTabBarController;
+			path = TabBarController;
 			sourceTree = "<group>";
 		};
 		8EF338182A861EB40048111B /* Screens */ = {
@@ -376,6 +376,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -404,6 +405,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
