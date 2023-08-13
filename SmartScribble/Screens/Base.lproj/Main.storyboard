@@ -83,7 +83,7 @@
             </objects>
             <point key="canvasLocation" x="7553" y="-1351"/>
         </scene>
-        <!--Tags-->
+        <!--Tags View Controller-->
         <scene sceneID="Li6-3N-HtH">
             <objects>
                 <viewController id="uNe-pF-5ul" customClass="TagsViewController" customModule="SmartScribble" customModuleProvider="target" sceneMemberID="viewController">
@@ -96,23 +96,32 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="Dur-rw-Dwe" style="IBUITableViewCellStyleDefault" id="2yP-so-3D2">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="2yP-so-3D2" customClass="TagTableViewCell" customModule="SmartScribble" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="361" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2yP-so-3D2" id="q6X-UP-wyh">
                                             <rect key="frame" x="0.0" y="0.0" width="361" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dur-rw-Dwe">
-                                                    <rect key="frame" x="20" y="0.0" width="321" height="43.666667938232422"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FMK-Jd-VSn">
+                                                    <rect key="frame" x="0.0" y="1" width="361" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjN-EJ-aAr">
+                                                            <rect key="frame" x="19" y="8" width="334" height="23"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                </view>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="containerView" destination="FMK-Jd-VSn" id="oxr-3J-3DB"/>
+                                            <outlet property="tagLabel" destination="fjN-EJ-aAr" id="rxO-dl-dpN"/>
                                             <segue destination="AwZ-5Z-zLu" kind="show" identifier="showDetail" id="GrG-Ab-F7f"/>
                                         </connections>
                                     </tableViewCell>
@@ -122,14 +131,14 @@
                         <viewLayoutGuide key="safeArea" id="yUj-vy-y66"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Tags" id="rbx-AF-drC"/>
+                    <navigationItem key="navigationItem" id="rbx-AF-drC"/>
                     <connections>
                         <outlet property="tableView" destination="bZq-GJ-CVE" id="hQJ-iH-aLs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4KG-Kj-IhB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6068" y="282"/>
+            <point key="canvasLocation" x="6067.93893129771" y="281.69014084507046"/>
         </scene>
         <!--TagName-->
         <scene sceneID="Wt3-Qz-al5">

@@ -26,6 +26,13 @@ class TagsViewController: UIViewController, UITableViewDataSource {
         setupUI()
         loadAndSortNotes()
         setupNotifications()
+        
+        let clockSymbol = UIImage(systemName: "tag")
+        let imageView = UIImageView(image: clockSymbol)
+        imageView.tintColor = UIColor.gray  // Setzt die Farbe des Symbols auf Grau
+        imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)  // Ändert die Größe des Bildes
+        imageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = imageView
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +49,7 @@ class TagsViewController: UIViewController, UITableViewDataSource {
     // MARK: - Setup Methods
     private func setupUI() {
         tableView.dataSource = self
+        tableView.separatorStyle = .none
     }
     
     private func setupNotifications() {
@@ -98,15 +106,19 @@ class TagsViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TagTableViewCell
+
         if indexPath.row == 0 && notesWithoutTags > 0 {
-            cell.textLabel?.text = "Ohne Label"
+            cell.tagLabel.text = "Ohne Label"
         } else {
-            cell.textLabel?.text = tagsArray[indexPath.row]
+            cell.tagLabel.text = tagsArray[indexPath.row]
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80.0
     }
     
     // MARK: - Navigation

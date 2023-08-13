@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		43D2ACE52A893CC800648E1A /* TagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2ACE42A893CC800648E1A /* TagTableViewCell.swift */; };
 		8E29136D2A83900C00EE9BFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29136C2A83900C00EE9BFB /* AppDelegate.swift */; };
 		8E29136F2A83900C00EE9BFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29136E2A83900C00EE9BFB /* SceneDelegate.swift */; };
 		8E2913712A83900C00EE9BFB /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2913702A83900C00EE9BFB /* TagsViewController.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		43D2ACE42A893CC800648E1A /* TagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTableViewCell.swift; sourceTree = "<group>"; };
 		8E2913692A83900C00EE9BFB /* SmartScribble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartScribble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E29136C2A83900C00EE9BFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8E29136E2A83900C00EE9BFB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				8EFC43CE2A850410005AF8C7 /* NoteCollectionViewCell.swift */,
+				43D2ACE42A893CC800648E1A /* TagTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				8E5A99262A84FF42000257B2 /* NotesCollectionViewController.swift in Sources */,
 				8E2913712A83900C00EE9BFB /* TagsViewController.swift in Sources */,
 				8EFC43CF2A850410005AF8C7 /* NoteCollectionViewCell.swift in Sources */,
+				43D2ACE52A893CC800648E1A /* TagTableViewCell.swift in Sources */,
 				8EF338162A850EE70048111B /* SingleNoteViewController.swift in Sources */,
 				8E29136D2A83900C00EE9BFB /* AppDelegate.swift in Sources */,
 				8E9AAC3A2A83EFDA008B3A59 /* DetailTagViewController.swift in Sources */,
