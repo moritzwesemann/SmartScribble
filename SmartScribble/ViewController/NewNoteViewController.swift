@@ -4,6 +4,7 @@
 
 import UIKit
 
+
 class NewNoteViewController: UIViewController {
 
     // MARK: - Outlets
@@ -17,11 +18,10 @@ class NewNoteViewController: UIViewController {
             Note.saveToFiles(notes: notes)
         }
     }
-
+    
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         loadData()
     }

@@ -5,6 +5,7 @@
 import UIKit
 
 class DetailTagViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
 
     // MARK: - Outlets
     @IBOutlet weak var notesTableView: UITableView!
@@ -30,6 +31,8 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         setupUI()
         loadAndSortNotes()
         setupNotifications()
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +41,11 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         loadAndSortNotes()
         filterAndDisplayNotes()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("didAddNewNote"), object: nil)
@@ -112,4 +120,5 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
             destinationVC.noteID = filteredNotes[indexPath].id
         }
     }
+    
 }

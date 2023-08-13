@@ -86,7 +86,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hRs-Tj-m3L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6849.6183206106871" y="-568.30985915492965"/>
+            <point key="canvasLocation" x="7553" y="-1351"/>
         </scene>
         <!--Tags-->
         <scene sceneID="Li6-3N-HtH">
@@ -140,7 +140,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4KG-Kj-IhB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7351.9083969465646" y="379.57746478873241"/>
+            <point key="canvasLocation" x="6068" y="282"/>
         </scene>
         <!--TagName-->
         <scene sceneID="Wt3-Qz-al5">
@@ -188,14 +188,20 @@
                         <viewLayoutGuide key="safeArea" id="wuX-Bx-dND"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="TagName" id="7IB-Iu-2Uw"/>
+                    <navigationItem key="navigationItem" title="TagName" id="7IB-Iu-2Uw">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="SWS-Dc-eNe">
+                            <connections>
+                                <segue destination="pQZ-0L-WQb" kind="presentation" identifier="newNote" id="Aa2-qC-x8O"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="notesTableView" destination="rou-1p-ry1" id="djh-ML-hhB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kj3-Tp-ebs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8744.2748091603044" y="594.36619718309862"/>
+            <point key="canvasLocation" x="7553" y="282"/>
         </scene>
         <!--New Note-->
         <scene sceneID="jht-2u-AtN">
@@ -254,7 +260,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmi-6c-kMR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8318.3206106870221" y="-92.253521126760575"/>
+            <point key="canvasLocation" x="8498" y="-499"/>
         </scene>
         <!--Single Note View Controller-->
         <scene sceneID="SY2-eQ-eaT">
@@ -300,13 +306,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wMt-Up-yZH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9631" y="-82"/>
+            <point key="canvasLocation" x="10379" y="-499"/>
         </scene>
-        <!--Labels-->
+        <!--Navigation Controller-->
         <scene sceneID="3If-63-h1I">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xc7-Li-5R3" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Labels" image="folder.fill" catalog="system" id="gYy-4g-E5G"/>
+                    <tabBarItem key="tabBarItem" title="" image="folder.fill" catalog="system" id="gYy-4g-E5G"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0IT-TG-bPm">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -319,7 +325,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x53-sZ-b30" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5805" y="230"/>
+            <point key="canvasLocation" x="4972" y="282"/>
         </scene>
         <!--Custom Tab Bar Controller-->
         <scene sceneID="xtM-1a-GZT">
@@ -330,7 +336,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <tabBarAppearance key="scrollEdgeAppearance"/>
+                        <tabBarAppearance key="scrollEdgeAppearance">
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="shadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </tabBarAppearance>
                     </tabBar>
                     <connections>
                         <segue destination="kpL-Ui-HJk" kind="relationship" relationship="viewControllers" id="hCD-Hp-hoQ"/>
@@ -339,13 +348,13 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TNX-Z4-QCM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4906" y="-92"/>
+            <point key="canvasLocation" x="3274" y="-152"/>
         </scene>
-        <!--Notes-->
+        <!--Navigation Controller-->
         <scene sceneID="3R2-Jh-qSf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kpL-Ui-HJk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Notes" image="note" catalog="system" id="jkT-6V-GMf"/>
+                    <tabBarItem key="tabBarItem" title="" image="note" catalog="system" id="jkT-6V-GMf"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Euh-zU-a7D">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -358,12 +367,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aQd-qk-W4j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5922.900763358778" y="-568.30985915492965"/>
+            <point key="canvasLocation" x="4973" y="-499"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="deA-f6-keJ"/>
-        <segue reference="Drm-Do-uJV"/>
+        <segue reference="zvB-KB-Jwb"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="folder.fill" catalog="system" width="128" height="96"/>
