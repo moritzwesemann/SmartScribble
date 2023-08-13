@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Recent Notes-->
+        <!--Notes Collection View Controller-->
         <scene sceneID="EDZ-8Z-gTy">
             <objects>
                 <viewController id="kQ8-IL-If7" customClass="NotesCollectionViewController" customModule="SmartScribble" customModuleProvider="target" sceneMemberID="viewController">
@@ -73,13 +73,8 @@
                         <viewLayoutGuide key="safeArea" id="563-m1-412"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Recent Notes" id="lt9-XN-ekX">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="rEk-dE-r2o">
-                            <connections>
-                                <segue destination="pQZ-0L-WQb" kind="presentation" id="zvB-KB-Jwb"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="lt9-XN-ekX"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="notesCollectionView" destination="K1W-5c-hP7" id="vHD-MR-ApM"/>
                     </connections>
@@ -127,13 +122,7 @@
                         <viewLayoutGuide key="safeArea" id="yUj-vy-y66"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Tags" id="rbx-AF-drC">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="WgN-f4-0mY">
-                            <connections>
-                                <segue destination="pQZ-0L-WQb" kind="presentation" id="Drm-Do-uJV"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Tags" id="rbx-AF-drC"/>
                     <connections>
                         <outlet property="tableView" destination="bZq-GJ-CVE" id="hQJ-iH-aLs"/>
                     </connections>
@@ -188,13 +177,7 @@
                         <viewLayoutGuide key="safeArea" id="wuX-Bx-dND"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="TagName" id="7IB-Iu-2Uw">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="SWS-Dc-eNe">
-                            <connections>
-                                <segue destination="pQZ-0L-WQb" kind="presentation" identifier="newNote" id="Aa2-qC-x8O"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="TagName" id="7IB-Iu-2Uw"/>
                     <connections>
                         <outlet property="notesTableView" destination="rou-1p-ry1" id="djh-ML-hhB"/>
                     </connections>
@@ -208,7 +191,7 @@
             <objects>
                 <viewController storyboardIdentifier="newNoteVC" title="New Note" id="pQZ-0L-WQb" customClass="NewNoteViewController" customModule="SmartScribble" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Rbd-Vy-ULK">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5uH-QP-nvN">
@@ -312,7 +295,7 @@
         <scene sceneID="3If-63-h1I">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xc7-Li-5R3" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="folder.fill" catalog="system" id="gYy-4g-E5G"/>
+                    <tabBarItem key="tabBarItem" title="" image="folder" catalog="system" id="gYy-4g-E5G"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0IT-TG-bPm">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -372,10 +355,9 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="deA-f6-keJ"/>
-        <segue reference="zvB-KB-Jwb"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="folder.fill" catalog="system" width="128" height="96"/>
+        <image name="folder" catalog="system" width="128" height="96"/>
         <image name="note" catalog="system" width="128" height="107"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
