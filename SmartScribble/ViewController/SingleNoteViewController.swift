@@ -2,9 +2,11 @@ import UIKit
 
 class SingleNoteViewController: UIViewController {
     
+    // MARK: - Outlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var textTextView: UITextView!
     
+    // MARK: - Properties
     var note: Note?
     var noteID: UUID?
     
@@ -22,11 +24,18 @@ class SingleNoteViewController: UIViewController {
         }
     }
     
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         loadNoteFromStorage()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        updateAndSaveNote()
+    }
+    
+    // MARK: - Private Utility Methods
     private func loadNoteFromStorage() {
         if let loadedNotes = Note.loadFromFile() {
             notes = loadedNotes
@@ -40,11 +49,26 @@ class SingleNoteViewController: UIViewController {
         textTextView.text = note?.text
     }
     
-    func extractHashtags(from text: String) -> [String] {
+    private func extractHashtags(from text: String) -> [String] {
         let words = text.components(separatedBy: .whitespacesAndNewlines)
         return words.filter { $0.hasPrefix("#") }.map { String($0.dropFirst()) }
     }
     
+    private func updateAndSaveNote() {
+        guard var updatedNote = note else { return }
+        
+        updatedNote.title = titleTextField.text ?? ""
+        updatedNote.text = textTextView.text ?? ""
+        updatedNote.lastEdited = Date()
+        updatedNote.tags = extractHashtags(from: updatedNote.text)
+        
+        if let idx = selectedNoteIndex, idx < notes.count {
+            notes[idx] = updatedNote
+            Note.saveToFiles(notes: notes)
+        }
+    }
+    
+    // MARK: - User Actions
     @IBAction func deleteNoteButton(_ sender: Any) {
         confirmNoteDeletion()
     }
@@ -63,25 +87,6 @@ class SingleNoteViewController: UIViewController {
         if let index = selectedNoteIndex {
             notes.remove(at: index)
             navigationController?.popViewController(animated: true)
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        updateAndSaveNote()
-    }
-    
-    private func updateAndSaveNote() {
-        guard var updatedNote = note else { return }
-        
-        updatedNote.title = titleTextField.text ?? ""
-        updatedNote.text = textTextView.text ?? ""
-        updatedNote.lastEdited = Date()
-        updatedNote.tags = extractHashtags(from: updatedNote.text)
-        
-        if let idx = selectedNoteIndex, idx < notes.count {
-            notes[idx] = updatedNote
-            Note.saveToFiles(notes: notes)
         }
     }
 }
