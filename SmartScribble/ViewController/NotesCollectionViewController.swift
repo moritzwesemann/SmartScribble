@@ -26,6 +26,8 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadNotes()
+        print("-----------CollectionView-------------")
+        print(notes)
         notesCollectionView.reloadData()
     }
     
@@ -65,6 +67,17 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
         }
     }
     
+    private func removeHashtags(from text: String) -> String {
+        do {
+            let regex = try NSRegularExpression(pattern: "#(\\w+)", options: [])
+            let modifiedText = regex.stringByReplacingMatches(in: text, options: [], range: NSRange(text.startIndex..., in: text), withTemplate: "")
+            return modifiedText
+        } catch let error {
+            print("Fehler beim Entfernen von Hashtags: \(error.localizedDescription)")
+            return text
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource & Delegate
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -77,21 +90,47 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = notesCollectionView.dequeueReusableCell(withReuseIdentifier: "noteCell", for: indexPath) as! NoteCollectionViewCell
         let note = notes[indexPath.row]
-        
+            
         cell.titleLabel.text = note.title
-        cell.contentTextField.text = String(note.text.prefix(230))
+            
+        let textWithoutHashtags = removeHashtags(from: note.text)
+        cell.contentTextField.text = String(textWithoutHashtags.prefix(230))
+            
         cell.tagsLabel.text = extractHashtags(from: note.text).joined(separator: " ")
-        
+            
         style(cell: cell)
         return cell
     }
     
+    
     func style(cell: NoteCollectionViewCell) {
-        cell.layer.borderWidth = 1.0
-        cell.layer.borderColor = UIColor.black.cgColor
+        // Hintergrundfarbe der Zelle
+        cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0) // Ein leicht grauer Farbton
+
+        // Textformatierung
+        cell.titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        cell.titleLabel.textColor = .black
+        cell.contentTextField.font = UIFont.systemFont(ofSize: 16)
+        cell.contentTextField.textColor = .darkGray
+        cell.tagsLabel.font = UIFont.systemFont(ofSize: 14)
+        cell.tagsLabel.textColor = .lightGray
+        
+        // Eckenradius
         cell.layer.cornerRadius = 8.0
+        
+        // Schatten
+        cell.layer.shadowColor = UIColor(white: 0.0, alpha: 0.1).cgColor
+        cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        cell.layer.shadowOpacity = 0.3
+        cell.layer.shadowRadius = 4.0
+
+        // Entfernen Sie den Rand
+        cell.layer.borderWidth = 0.0
+        
+        // Deaktivieren Sie die Interaktion mit dem Textfeld
         cell.contentTextField.isUserInteractionEnabled = false
     }
+
     
     // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

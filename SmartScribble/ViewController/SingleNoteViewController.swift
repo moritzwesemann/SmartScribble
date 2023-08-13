@@ -9,6 +9,7 @@ class SingleNoteViewController: UIViewController {
     // MARK: - Properties
     var note: Note?
     var noteID: UUID?
+    var noteWasDeleted = false
     
     private var notes: [Note] = [] {
         didSet {
@@ -35,6 +36,11 @@ class SingleNoteViewController: UIViewController {
         updateAndSaveNote()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
     // MARK: - Private Utility Methods
     private func loadNoteFromStorage() {
         if let loadedNotes = Note.loadFromFile() {
@@ -57,14 +63,17 @@ class SingleNoteViewController: UIViewController {
     private func updateAndSaveNote() {
         guard var updatedNote = note else { return }
         
-        updatedNote.title = titleTextField.text ?? ""
-        updatedNote.text = textTextView.text ?? ""
-        updatedNote.lastEdited = Date()
-        updatedNote.tags = extractHashtags(from: updatedNote.text)
-        
-        if let idx = selectedNoteIndex, idx < notes.count {
-            notes[idx] = updatedNote
-            Note.saveToFiles(notes: notes)
+        if noteWasDeleted == false {
+            
+            updatedNote.title = titleTextField.text ?? ""
+            updatedNote.text = textTextView.text ?? ""
+            updatedNote.lastEdited = Date()
+            updatedNote.tags = extractHashtags(from: updatedNote.text)
+            
+            if let idx = selectedNoteIndex, idx < notes.count {
+                notes[idx] = updatedNote
+                Note.saveToFiles(notes: notes)
+            }
         }
     }
     
@@ -84,9 +93,10 @@ class SingleNoteViewController: UIViewController {
     }
     
     private func deleteNote() {
-        if let index = selectedNoteIndex {
-            notes.remove(at: index)
+        if let id = noteID {
+            notes.removeAll(where: { $0.id == id })
             navigationController?.popViewController(animated: true)
+            noteWasDeleted = true
         }
     }
 }
