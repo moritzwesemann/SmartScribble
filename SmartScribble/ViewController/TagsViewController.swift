@@ -17,6 +17,7 @@ class TagsViewController: UIViewController, UITableViewDataSource {
     }
     var uniqueTags: Set<String> = []
     var tagsArray: [String] = []
+    var notesWithoutTags: Int = 0
     
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
@@ -60,11 +61,23 @@ class TagsViewController: UIViewController, UITableViewDataSource {
     
     private func updateTagsArray() {
         uniqueTags.removeAll()
+        notesWithoutTags = 0
+        
         for note in notes {
-            uniqueTags.formUnion(note.tags)
+            if note.tags.isEmpty {
+                notesWithoutTags += 1
+            } else {
+                uniqueTags.formUnion(note.tags)
+            }
         }
+        
         tagsArray = Array(uniqueTags)
         tagsArray.sort()
+        
+        // Falls es Notizen ohne Tags gibt, den "Ohne Label"-Eintrag am Anfang des Arrays hinzufügen
+        if notesWithoutTags > 0 {
+            tagsArray.insert("Ohne Label", at: 0)
+        }
     }
     
     private func refreshDataAndView() {
@@ -81,12 +94,18 @@ class TagsViewController: UIViewController, UITableViewDataSource {
 
     // MARK: - Table View Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return uniqueTags.count
+        return uniqueTags.count + (notesWithoutTags > 0 ? 1 : 0)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = tagsArray[indexPath.row]
+        
+        if indexPath.row == 0 && notesWithoutTags > 0 {
+            cell.textLabel?.text = "Ohne Label"
+        } else {
+            cell.textLabel?.text = tagsArray[indexPath.row]
+        }
+        
         return cell
     }
     

@@ -27,7 +27,6 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
         loadAndSortNotes()
         setupNotifications()
@@ -68,9 +67,18 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     private func filterAndDisplayNotes() {
-        filteredNotes = notes.filter { note in
-            return note.tags.contains(selectedTag ?? "")
+        if selectedTag == "Ohne Label" {
+            // Filtere alle Notizen, die keine Tags haben
+            filteredNotes = notes.filter { note in
+                return note.tags.isEmpty
+            }
+        } else {
+            // Filtere Notizen basierend auf dem ausgewählten Tag
+            filteredNotes = notes.filter { note in
+                return note.tags.contains(selectedTag ?? "")
+            }
         }
+
         filteredNotes.sort(by: { $0.lastEdited > $1.lastEdited })
         notesTableView.reloadData()
     }

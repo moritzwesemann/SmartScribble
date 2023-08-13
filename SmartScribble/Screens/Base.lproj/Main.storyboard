@@ -128,7 +128,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" title="Tags" id="rbx-AF-drC">
-                        <barButtonItem key="leftBarButtonItem" systemItem="organize" id="uJv-hs-tVd"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="WgN-f4-0mY">
                             <connections>
                                 <segue destination="pQZ-0L-WQb" kind="presentation" id="Drm-Do-uJV"/>
@@ -198,10 +197,10 @@
             </objects>
             <point key="canvasLocation" x="8744.2748091603044" y="594.36619718309862"/>
         </scene>
-        <!--New Note View Controller-->
+        <!--New Note-->
         <scene sceneID="jht-2u-AtN">
             <objects>
-                <viewController storyboardIdentifier="newNoteVC" id="pQZ-0L-WQb" customClass="NewNoteViewController" customModule="SmartScribble" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newNoteVC" title="New Note" id="pQZ-0L-WQb" customClass="NewNoteViewController" customModule="SmartScribble" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Rbd-Vy-ULK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -221,13 +220,13 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GpM-G4-ctW">
-                                <rect key="frame" x="16" y="20" width="40" height="35"/>
+                                <rect key="frame" x="16" y="13" width="40" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="AI"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4uK-m8-S5d">
-                                <rect key="frame" x="316" y="20" width="61" height="35"/>
+                                <rect key="frame" x="316" y="13" width="61" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Save"/>
@@ -235,6 +234,13 @@
                                     <action selector="saveButtonPressed:" destination="pQZ-0L-WQb" eventType="touchUpInside" id="v3K-l9-tsS"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New Note" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EC4-U8-4Ww">
+                                <rect key="frame" x="157" y="20" width="78" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gp3-62-OYV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -357,7 +363,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="deA-f6-keJ"/>
-        <segue reference="zvB-KB-Jwb"/>
+        <segue reference="Drm-Do-uJV"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="folder.fill" catalog="system" width="128" height="96"/>

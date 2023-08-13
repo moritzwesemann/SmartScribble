@@ -26,8 +26,6 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadNotes()
-        print("-----------CollectionView-------------")
-        print(notes)
         notesCollectionView.reloadData()
     }
     
