@@ -56,6 +56,7 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         self.navigationItem.title = selectedTag
         notesTableView.delegate = self
         notesTableView.dataSource = self
+        notesTableView.separatorStyle = .none
     }
     
     private func setupNotifications() {
@@ -97,20 +98,17 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "noteCell", for: indexPath)
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DetailTagTableViewCell
+        
         let note = filteredNotes[indexPath.row]
         
-        configureCell(cell, with: note)
+        cell.titleLabel.text = note.title
+        cell.lastEditedLabel.text = dateFormatter.string(from: note.lastEdited)
+        
         return cell
     }
     
-    private func configureCell(_ cell: UITableViewCell, with note: Note) {
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        cell.textLabel?.text = note.title
-
-        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
-        cell.detailTextLabel?.text = dateFormatter.string(from: note.lastEdited)
-    }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
