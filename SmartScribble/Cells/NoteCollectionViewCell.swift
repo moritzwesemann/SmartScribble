@@ -10,20 +10,25 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var tagsLabel: UILabel!
     
     override func awakeFromNib() {
-            super.awakeFromNib()
-            
-            // Formatieren des Titel-Labels
-            titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
-            titleLabel.textColor = .black
-            
-            // Formatieren des Text-Labels
-            contentTextField.font = UIFont.systemFont(ofSize: 14)
-            contentTextField.textColor = .darkGray
-            
-            // Formatieren des Tags-Labels
-            tagsLabel.font = UIFont.systemFont(ofSize: 12)
-            tagsLabel.textColor = .black
-        }
+        super.awakeFromNib()
+        
+        configureTitleLabel()
+        configureContentTextField()
+        configureTagsLabel()
+    }
     
+    private func configureTitleLabel() {
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        titleLabel.textColor = .black
+    }
+    
+    private func configureContentTextField() {
+        contentTextField.font = UIFont.systemFont(ofSize: 14)
+        contentTextField.textColor = .darkGray
+    }
+    
+    private func configureTagsLabel() {
+        tagsLabel.font = UIFont.systemFont(ofSize: 12)
+        tagsLabel.textColor = .black
+    }
 }
-

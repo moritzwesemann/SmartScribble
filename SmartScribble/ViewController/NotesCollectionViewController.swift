@@ -7,56 +7,54 @@
 
 import UIKit
 
-
 class NotesCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-
+    
+    // MARK: - Outlets
     @IBOutlet weak var notesCollectionView: UICollectionView!
     
+    // MARK: - Properties
     var notes: [Note] = []
     
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Setzt den Delegierten und die Datenquelle für die Sammlung
-        notesCollectionView.delegate = self
-        notesCollectionView.dataSource = self
-        
-        //Lädt die Notizen aus einer Datei
-        if let loadedNotes = Note.loadFromFile() {
-            notes = loadedNotes
-        }
-        
-        //Listen ob eine neue Nachricht erschienen ist
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNewNoteAdded), name: NSNotification.Name("didAddNewNote"), object: nil)
+        setupCollectionView()
+        loadNotes()
+        registerForNoteNotifications()
     }
     
-    @objc func handleNewNoteAdded() {
-        // Aktualisieren Sie hier Ihre TableView oder CollectionView
-        if let loadedNotes = Note.loadFromFile() {
-            notes = loadedNotes.sorted(by: { $0.lastEdited > $1.lastEdited })
-            }
-        notesCollectionView.reloadData() // oder collectionView.reloadData()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadNotes()
+        notesCollectionView.reloadData()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("didAddNewNote"), object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-            super.viewWillAppear(animated)
-        
-        print("viewWillAppear called")
-            
-            //Aktualisieren der Notizen, wenn der ViewController sichtbar wird
-            if let loadedNotes = Note.loadFromFile() {
-                notes = loadedNotes.sorted(by:  { $0.lastEdited > $1.lastEdited })
-                
-                notesCollectionView.reloadData() // Löst eine Aktualisierung der Sammlung aus
-            }
-        }
+    // MARK: - Private Methods
+    private func setupCollectionView() {
+        notesCollectionView.delegate = self
+        notesCollectionView.dataSource = self
+    }
     
-    //Hashtags extrahieren
-    func extractHashtags(from text: String) -> [String] {
+    private func loadNotes() {
+        if let loadedNotes = Note.loadFromFile() {
+            notes = loadedNotes.sorted(by: { $0.lastEdited > $1.lastEdited })
+        }
+    }
+    
+    private func registerForNoteNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewNoteAdded), name: NSNotification.Name("didAddNewNote"), object: nil)
+    }
+    
+    @objc private func handleNewNoteAdded() {
+        loadNotes()
+        notesCollectionView.reloadData()
+    }
+    
+    private func extractHashtags(from text: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: "#(\\w+)", options: [])
             let results = regex.matches(in: text, options: [], range: NSRange(text.startIndex..., in: text))
@@ -67,61 +65,47 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
         }
     }
     
-
-    //Abstand zwischen den Zellen einstellen
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0 // Dies ist der horizontale Abstand. Sie können den Wert ändern, um den gewünschten Abstand zu erhalten.
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10.0 // Dies ist der vertikale Abstand. Sie können den Wert ändern, um den gewünschten Abstand zu erhalten.
-    }
-    
-    // Gibt die Anzahl der Abschnitte in der Sammlung zurück
+    // MARK: - UICollectionViewDataSource & Delegate
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    // Gibt die Anzahl der Elemente in einem Abschnitt zurück
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return notes.count
     }
     
-    // Erstellt und konfiguriert eine Zelle an einer bestimmten Position
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = notesCollectionView.dequeueReusableCell(withReuseIdentifier: "noteCell", for: indexPath) as! NoteCollectionViewCell
         let note = notes[indexPath.row]
         
-        // Setzt den Titel und den Textvorschau für die Zelle
         cell.titleLabel.text = note.title
         cell.contentTextField.text = String(note.text.prefix(230))
+        cell.tagsLabel.text = extractHashtags(from: note.text).joined(separator: " ")
         
-        // Hashtags extrahieren und setzen
-        let hashtags = extractHashtags(from: note.text)
-        cell.tagsLabel.text = hashtags.joined(separator: " ")
-        
-
-        // Rahmen und abgerundete Ecken hinzufügen
-        cell.layer.borderWidth = 1.0 // Dicke des Rahmens
-        cell.layer.borderColor = UIColor.black.cgColor // Farbe des Rahmens
-        cell.layer.cornerRadius = 8.0 // Radius der Ecken
-        
-        //Textfeld Interaction entfernt
-        cell.contentTextField.isUserInteractionEnabled = false
-        
+        style(cell: cell)
         return cell
     }
     
-    //Übergang zu SingleNoteViewController
+    func style(cell: NoteCollectionViewCell) {
+        cell.layer.borderWidth = 1.0
+        cell.layer.borderColor = UIColor.black.cgColor
+        cell.layer.cornerRadius = 8.0
+        cell.contentTextField.isUserInteractionEnabled = false
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+    
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showNoteDetail", let destinationVC = segue.destination as? SingleNoteViewController, let indexPath = notesCollectionView.indexPathsForSelectedItems?.first {
-            // Übergeben Sie die ausgewählte Notiz an den neuen View Controller
             destinationVC.noteID = notes[indexPath.row].id
-            print(notes[indexPath.row].id)
-            print(indexPath.row)
         }
     }
-
-
 }

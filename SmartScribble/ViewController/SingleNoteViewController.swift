@@ -1,10 +1,3 @@
-//
-//  singleNoteViewController.swift
-//  SmartScribble
-//
-//  Created by Moritz on 10.08.23.
-//
-
 import UIKit
 
 class SingleNoteViewController: UIViewController {
@@ -12,100 +5,83 @@ class SingleNoteViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var textTextView: UITextView!
     
-
-    
     var note: Note?
-    var selectedNoteIndex = 0
     var noteID: UUID?
     
-    var notes: [Note] = [] {
+    private var notes: [Note] = [] {
         didSet {
             Note.saveToFiles(notes: notes)
         }
     }
     
+    private var selectedNoteIndex: Int? {
+        didSet {
+            if let idx = selectedNoteIndex {
+                note = notes[idx]
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        loadNoteFromStorage()
+    }
+    
+    private func loadNoteFromStorage() {
         if let loadedNotes = Note.loadFromFile() {
             notes = loadedNotes
-            
-            // Finde die Notiz mit der spezifischen ID
-            if let noteID = noteID {
-                if let index = notes.firstIndex(where: { $0.id == noteID }) {
-                    note = notes[index]
-                    selectedNoteIndex = index // Speichere den Index der ausgewählten Notiz
-                }
-            }
-            
-            if let note = note {
-                titleTextField.text = note.title
-                textTextView.text = note.text
-            }
+            selectedNoteIndex = notes.firstIndex(where: { $0.id == noteID })
+            displayNote()
         }
     }
     
-    //Hashtags extrahieren und in Tagsarray speichern und zurückgeben
-        
-        func extractHashtags(from text: String) -> [String] {
-            var extractedTags: [String] = []
-            
-            let words = text.components(separatedBy: .whitespacesAndNewlines)
-            for word in words {
-                if word.hasPrefix("#") {
-                    let tag = word.dropFirst() // Entferne das '#'-Zeichen
-                    extractedTags.append(String(tag))
-                }
-            }
-            
-            return extractedTags
-        }
+    private func displayNote() {
+        titleTextField.text = note?.title
+        textTextView.text = note?.text
+    }
+    
+    func extractHashtags(from text: String) -> [String] {
+        let words = text.components(separatedBy: .whitespacesAndNewlines)
+        return words.filter { $0.hasPrefix("#") }.map { String($0.dropFirst()) }
+    }
     
     @IBAction func deleteNoteButton(_ sender: Any) {
-        
-        // Zeige einen Bestätigungs-Alert
-            let alert = UIAlertController(title: "Notiz löschen", message: "Möchten Sie diese Notiz wirklich löschen?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Löschen", style: .destructive, handler: { [weak self] _ in
-                // Lösche die Notiz
-                self?.notes.remove(at: self?.selectedNoteIndex ?? 0)
-                Note.saveToFiles(notes: self?.notes ?? [])
-                self?.navigationController?.popViewController(animated: true)
-            }))
-            
-            present(alert, animated: true, completion: nil)
+        confirmNoteDeletion()
     }
     
+    private func confirmNoteDeletion() {
+        let alert = UIAlertController(title: "Notiz löschen", message: "Möchten Sie diese Notiz wirklich löschen?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Abbrechen", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Löschen", style: .destructive) { [weak self] _ in
+            self?.deleteNote()
+        })
         
-        
-        
-        override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-            
-            if var note = note, let editedTitle = titleTextField.text, let editedText = textTextView.text {
-                // Aktualisieren Sie die Eigenschaften der Note mit den bearbeiteten Werten
-                note.title = editedTitle
-                note.text = editedText
-                note.lastEdited = Date()
-                
-                let extractedTags = extractHashtags(from: editedText)
-                note.tags = extractedTags
-                
-                
-                //Wenn eine Notiz überarbeit wurde, dann aktualisiere den Code
-                if selectedNoteIndex < notes.count {
-                        // Aktualisieren Sie die entsprechende Note im Array
-                        notes[selectedNoteIndex] = note
-                            
-                        // Speichern Sie die aktualisierten Notizen
-                        Note.saveToFiles(notes: notes)
-                        }
-            }
-            
-        }
-        
-        
+        present(alert, animated: true)
     }
-
+    
+    private func deleteNote() {
+        if let index = selectedNoteIndex {
+            notes.remove(at: index)
+            navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        updateAndSaveNote()
+    }
+    
+    private func updateAndSaveNote() {
+        guard var updatedNote = note else { return }
+        
+        updatedNote.title = titleTextField.text ?? ""
+        updatedNote.text = textTextView.text ?? ""
+        updatedNote.lastEdited = Date()
+        updatedNote.tags = extractHashtags(from: updatedNote.text)
+        
+        if let idx = selectedNoteIndex, idx < notes.count {
+            notes[idx] = updatedNote
+            Note.saveToFiles(notes: notes)
+        }
+    }
+}
