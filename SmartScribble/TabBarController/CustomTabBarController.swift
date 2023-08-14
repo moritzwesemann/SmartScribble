@@ -48,7 +48,6 @@ class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate {
     }
     
     @objc private func handleSwipes(_ sender: UISwipeGestureRecognizer) {
-        guard let currentViewController = (selectedViewController as? UINavigationController)?.topViewController else { return }
         
         if sender.direction == .left && selectedIndex < (tabBar.items?.count ?? 0) - 1 {
             animateToTab(to: selectedIndex + 1)
