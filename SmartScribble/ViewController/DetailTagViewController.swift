@@ -4,120 +4,152 @@
 
 import UIKit
 
-class DetailTagViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+class DetailTagViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     // MARK: - Outlets
-    @IBOutlet weak var notesTableView: UITableView!
+    @IBOutlet weak var detailTagCollectionView: UICollectionView!
 
     // MARK: - Properties
-    var selectedTag: String?
-    var notes: [Note] = [] {
-        didSet {
-            filterAndDisplayNotes()
-        }
-    }
-    var filteredNotes: [Note] = [] // Stores the filtered notes based on selected tag
-    let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "de_DE")
-        formatter.dateFormat = "'Zuletzt:' dd.MM. HH:mm"
-        return formatter
-    }()
+    var notes: [Note] = []
+    var filteredNotes: [Note] = []
+    var selectedTag = ""
     
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        loadAndSortNotes()
-        setupNotifications()
-        
-        
+        setupCollectionView()
+        loadNotes()
+        registerForNoteNotifications()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        loadAndSortNotes()
-        filterAndDisplayNotes()
+        loadNotes()
+        detailTagCollectionView.reloadData()
+        print(selectedTag)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("didAddNewNote"), object: nil)
     }
-
-    // MARK: - Setup Methods
-    private func setupUI() {
-        self.navigationItem.title = selectedTag
-        notesTableView.delegate = self
-        notesTableView.dataSource = self
-        notesTableView.separatorStyle = .none
+    
+    // MARK: - Private Methods
+    private func setupCollectionView() {
+        detailTagCollectionView.delegate = self
+        detailTagCollectionView.dataSource = self
     }
     
-    private func setupNotifications() {
+    private func loadNotes() {
+        if let loadedNotes = Note.loadFromFile() {
+            notes = loadedNotes.sorted(by: { $0.lastEdited > $1.lastEdited })
+            
+            if selectedTag == "Sonstiges" {
+                filteredNotes = notes.filter { $0.tags.isEmpty }
+            } else {
+                filteredNotes = notes.filter { $0.tags.contains(selectedTag) }
+            }
+        }
+    }
+
+    
+    private func registerForNoteNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleNewNoteAdded), name: NSNotification.Name("didAddNewNote"), object: nil)
     }
     
-    // MARK: - Data Methods
-    @objc func handleNewNoteAdded() {
-        loadAndSortNotes()
-        notesTableView.reloadData()
+    @objc private func handleNewNoteAdded() {
+        loadNotes()
+        detailTagCollectionView.reloadData()
     }
     
-    private func loadAndSortNotes() {
-        if let loadedNotes = Note.loadFromFile() {
-            notes = loadedNotes.sorted(by: { $0.lastEdited > $1.lastEdited })
+    private func extractHashtags(from text: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: "#(\\w+)", options: [])
+            let results = regex.matches(in: text, options: [], range: NSRange(text.startIndex..., in: text))
+            return results.map { String(text[Range($0.range, in: text)!]) }
+        } catch let error {
+            print("Fehler beim Extrahieren von Hashtags: \(error.localizedDescription)")
+            return []
         }
     }
-
-    private func filterAndDisplayNotes() {
-        if selectedTag == "---Ohne Tag---" {
-            // Filtere alle Notizen, die keine Tags haben
-            filteredNotes = notes.filter { note in
-                return note.tags.isEmpty
-            }
-        } else {
-            // Filtere Notizen basierend auf dem ausgewählten Tag
-            filteredNotes = notes.filter { note in
-                return note.tags.contains(selectedTag ?? "")
-            }
+    
+    private func removeHashtags(from text: String) -> String {
+        do {
+            let regex = try NSRegularExpression(pattern: "#(\\w+)", options: [])
+            let modifiedText = regex.stringByReplacingMatches(in: text, options: [], range: NSRange(text.startIndex..., in: text), withTemplate: "")
+            return modifiedText
+        } catch let error {
+            print("Fehler beim Entfernen von Hashtags: \(error.localizedDescription)")
+            return text
         }
-
-        filteredNotes.sort(by: { $0.lastEdited > $1.lastEdited })
-        notesTableView.reloadData()
     }
-
-    // MARK: - Table View Data Source & Delegate
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    // MARK: - UICollectionViewDataSource & Delegate
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredNotes.count
     }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DetailTagTableViewCell
-        
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = detailTagCollectionView.dequeueReusableCell(withReuseIdentifier: "noteCell", for: indexPath) as! NoteCollectionViewCell
         let note = filteredNotes[indexPath.row]
-        
+            
         cell.titleLabel.text = note.title
-        cell.lastEditedLabel.text = dateFormatter.string(from: note.lastEdited)
-        cell.selectionStyle = .none
-        
+            
+        let textWithoutHashtags = removeHashtags(from: note.text)
+        cell.contentTextField.text = String(textWithoutHashtags.prefix(230))
+            
+        cell.tagsLabel.text = extractHashtags(from: note.text).joined(separator: " ")
+            
+        style(cell: cell)
         return cell
     }
     
+    func style(cell: NoteCollectionViewCell) {
+        // Hintergrundfarbe der Zelle
+        cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0) // Ein leicht grauer Farbton
+
+        // Textformatierung
+        cell.titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        cell.titleLabel.textColor = .black
+        cell.contentTextField.font = UIFont.systemFont(ofSize: 16)
+        cell.contentTextField.textColor = .darkGray
+        cell.tagsLabel.font = UIFont.systemFont(ofSize: 14)
+        cell.tagsLabel.textColor = .lightGray
+        
+        // Eckenradius
+        cell.layer.cornerRadius = 8.0
+        
+        // Schatten
+        cell.layer.shadowColor = UIColor(white: 0.0, alpha: 0.1).cgColor
+        cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        cell.layer.shadowOpacity = 0.3
+        cell.layer.shadowRadius = 4.0
+
+        // Entfernen Sie den Rand
+        cell.layer.borderWidth = 0.0
+        
+        // Deaktivieren Sie die Interaktion mit dem Textfeld
+        cell.contentTextField.isUserInteractionEnabled = false
+    }
+
+    // MARK: - UICollectionViewDelegateFlowLayout
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10.0
+    }
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showNoteDetail",
            let destinationVC = segue.destination as? SingleNoteViewController,
-           let indexPath = notesTableView.indexPathForSelectedRow?.row {
-            destinationVC.noteID = filteredNotes[indexPath].id
+           let indexPath = detailTagCollectionView.indexPathsForSelectedItems?.first {
+            destinationVC.noteID = filteredNotes[indexPath.row].id
         }
     }
-    
 }

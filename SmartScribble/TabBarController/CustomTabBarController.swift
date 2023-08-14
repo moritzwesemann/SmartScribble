@@ -38,7 +38,7 @@ class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate {
             allowSwipe = true
         } else if let tagsController = currentViewController.topViewController as? TagsViewController, tagsController.tableView.contentOffset.y <= 0 {
             allowSwipe = true
-        } else if let detailTagController = currentViewController.topViewController as? DetailTagViewController, detailTagController.notesTableView.contentOffset.y <= 0 {
+        } else if let detailTagController = currentViewController.topViewController as? DetailTagViewController, detailTagController.detailTagCollectionView.contentOffset.y <= 0 {
             allowSwipe = true
         }
 

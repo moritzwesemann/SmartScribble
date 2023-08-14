@@ -122,7 +122,7 @@
                                         <connections>
                                             <outlet property="containerView" destination="FMK-Jd-VSn" id="oxr-3J-3DB"/>
                                             <outlet property="tagLabel" destination="fjN-EJ-aAr" id="rxO-dl-dpN"/>
-                                            <segue destination="AwZ-5Z-zLu" kind="show" identifier="showDetail" id="GrG-Ab-F7f"/>
+                                            <segue destination="kcs-jb-iOi" kind="show" identifier="showDetail" id="eMW-p2-HxY"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -140,70 +140,78 @@
             </objects>
             <point key="canvasLocation" x="6067.93893129771" y="281.69014084507046"/>
         </scene>
-        <!--TagName-->
-        <scene sceneID="Wt3-Qz-al5">
+        <!--Detail Tag View Controller-->
+        <scene sceneID="lQM-5Z-XiS">
             <objects>
-                <viewController id="AwZ-5Z-zLu" customClass="DetailTagViewController" customModule="SmartScribble" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Mu2-Tl-gHv">
+                <viewController id="kcs-jb-iOi" customClass="DetailTagViewController" customModule="SmartScribble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uDC-3R-KNc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="rou-1p-ry1">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="A65-Ss-fL1">
                                 <rect key="frame" x="16" y="103" width="361" height="666"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="7i9-0T-9hc" customClass="DetailTagTableViewCell" customModule="SmartScribble" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="361" height="43.666667938232422"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7i9-0T-9hc" id="CZW-kV-fRB">
-                                            <rect key="frame" x="0.0" y="0.0" width="361" height="43.666667938232422"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jjN-IL-JBh">
+                                    <size key="itemSize" width="176" height="270"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="noteCell" id="sZd-Kd-FD1" customClass="NoteCollectionViewCell" customModule="SmartScribble" customModuleProvider="target">
+                                        <rect key="frame" x="92.666666666666671" y="0.0" width="176" height="270"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="WgS-kc-W25">
+                                            <rect key="frame" x="0.0" y="0.0" width="176" height="270"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pc7-Xu-0w9">
-                                                    <rect key="frame" x="0.0" y="2" width="361" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xS8-rC-N7l">
+                                                    <rect key="frame" x="8" y="8" width="160" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgf-pB-iaN">
-                                                            <rect key="frame" x="8" y="3" width="345" height="18"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fal-IC-882">
-                                                            <rect key="frame" x="8" y="23" width="345" height="13"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                </view>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2gG-x1-yYQ">
+                                                    <rect key="frame" x="8" y="217" width="160" height="45"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="stP-PP-Lfv">
+                                                    <rect key="frame" x="8" y="37" width="160" height="172"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                    <color key="textColor" systemColor="labelColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
-                                        </tableViewCellContentView>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="176" height="270"/>
                                         <connections>
-                                            <outlet property="containerView" destination="pc7-Xu-0w9" id="a6e-ww-Bnm"/>
-                                            <outlet property="lastEditedLabel" destination="Fal-IC-882" id="fmb-AJ-6MC"/>
-                                            <outlet property="titleLabel" destination="jgf-pB-iaN" id="egT-bz-VZr"/>
-                                            <segue destination="8d0-TD-T4z" kind="show" identifier="showNoteDetail" id="YfO-XL-5i5"/>
+                                            <outlet property="contentTextField" destination="stP-PP-Lfv" id="W9d-xg-URn"/>
+                                            <outlet property="tagsLabel" destination="2gG-x1-yYQ" id="ibW-4q-hmf"/>
+                                            <outlet property="titleLabel" destination="xS8-rC-N7l" id="1Ta-zA-LkY"/>
+                                            <segue destination="pQZ-0L-WQb" kind="show" identifier="showNoteDetail" id="h1g-BG-h49"/>
                                         </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="wuX-Bx-dND"/>
+                        <viewLayoutGuide key="safeArea" id="CV7-la-Kub"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="TagName" style="editor" id="7IB-Iu-2Uw"/>
+                    <navigationItem key="navigationItem" id="cRf-dd-pA2"/>
                     <connections>
-                        <outlet property="notesTableView" destination="rou-1p-ry1" id="djh-ML-hhB"/>
+                        <outlet property="detailTagCollectionView" destination="A65-Ss-fL1" id="bYV-zj-5YB"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kj3-Tp-ebs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PCT-9d-Zx1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7551.9083969465646" y="281.69014084507046"/>
+            <point key="canvasLocation" x="7253" y="282"/>
         </scene>
         <!--New Note-->
         <scene sceneID="jht-2u-AtN">
@@ -268,9 +276,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gb7-MM-XHV">
-                                <rect key="frame" x="16" y="145" width="361" height="673"/>
+                                <rect key="frame" x="16" y="145" width="361" height="611"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
@@ -303,7 +311,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wMt-Up-yZH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10379" y="-499"/>
+            <point key="canvasLocation" x="10377.862595419847" y="-499.29577464788736"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3If-63-h1I">
@@ -364,9 +372,6 @@
             <point key="canvasLocation" x="4973" y="-499"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="YfO-XL-5i5"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
         <image name="folder" catalog="system" width="128" height="96"/>
@@ -377,6 +382,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
