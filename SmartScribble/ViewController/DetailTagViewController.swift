@@ -21,7 +21,7 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "de_DE")
-        formatter.dateFormat = "'Last edited:' dd.MM.yyyy HH:mm"
+        formatter.dateFormat = "'Zuletzt:' dd.MM. HH:mm"
         return formatter
     }()
     
@@ -76,7 +76,7 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     private func filterAndDisplayNotes() {
-        if selectedTag == "Ohne Label" {
+        if selectedTag == "---Ohne Tag---" {
             // Filtere alle Notizen, die keine Tags haben
             filteredNotes = notes.filter { note in
                 return note.tags.isEmpty

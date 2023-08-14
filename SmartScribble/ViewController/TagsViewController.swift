@@ -84,7 +84,7 @@ class TagsViewController: UIViewController, UITableViewDataSource {
         
         // Falls es Notizen ohne Tags gibt, den "Ohne Label"-Eintrag am Anfang des Arrays hinzufügen
         if notesWithoutTags > 0 {
-            tagsArray.insert("Ohne Label", at: 0)
+            tagsArray.insert("---Ohne Tag---", at: 0)
         }
     }
     
@@ -109,7 +109,7 @@ class TagsViewController: UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TagTableViewCell
 
         if indexPath.row == 0 && notesWithoutTags > 0 {
-            cell.tagLabel.text = "Ohne Label"
+            cell.tagLabel.text = "---Ohne Tag---"
         } else {
             cell.tagLabel.text = tagsArray[indexPath.row]
         }

@@ -22,7 +22,7 @@ class NotesCollectionViewController: UIViewController, UICollectionViewDataSourc
         loadNotes()
         registerForNoteNotifications()
         
-        let clockSymbol = UIImage(systemName: "clock")
+        let clockSymbol = UIImage(systemName: "clock.arrow.circlepath")
         let imageView = UIImageView(image: clockSymbol)
         imageView.tintColor = UIColor.gray  // Setzt die Farbe des Symbols auf Grau
         imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)  // Ändert die Größe des Bildes
