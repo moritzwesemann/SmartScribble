@@ -195,7 +195,7 @@
                                             <outlet property="contentTextField" destination="stP-PP-Lfv" id="W9d-xg-URn"/>
                                             <outlet property="tagsLabel" destination="2gG-x1-yYQ" id="ibW-4q-hmf"/>
                                             <outlet property="titleLabel" destination="xS8-rC-N7l" id="1Ta-zA-LkY"/>
-                                            <segue destination="pQZ-0L-WQb" kind="show" identifier="showNoteDetail" id="h1g-BG-h49"/>
+                                            <segue destination="8d0-TD-T4z" kind="show" identifier="showNoteDetail" id="TnE-YF-0Yf"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -204,7 +204,7 @@
                         <viewLayoutGuide key="safeArea" id="CV7-la-Kub"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="cRf-dd-pA2"/>
+                    <navigationItem key="navigationItem" style="editor" id="cRf-dd-pA2"/>
                     <connections>
                         <outlet property="detailTagCollectionView" destination="A65-Ss-fL1" id="bYV-zj-5YB"/>
                     </connections>
@@ -275,21 +275,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gb7-MM-XHV">
-                                <rect key="frame" x="16" y="145" width="361" height="611"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z9A-lT-ENW">
+                                <rect key="frame" x="15" y="103" width="362" height="649"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Titel" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wh3-mh-X1S">
-                                <rect key="frame" x="16" y="103" width="361" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="28"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gb7-MM-XHV">
+                                        <rect key="frame" x="8" y="50" width="346" height="608"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Titel" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wh3-mh-X1S">
+                                        <rect key="frame" x="8" y="8" width="346" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="28"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Q65-fo-pI3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -305,6 +311,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="noteView" destination="z9A-lT-ENW" id="fph-RE-ac6"/>
                         <outlet property="textTextView" destination="gb7-MM-XHV" id="vLD-R9-Je9"/>
                         <outlet property="titleTextField" destination="Wh3-mh-X1S" id="Ekr-As-WgR"/>
                     </connections>
@@ -372,6 +379,9 @@
             <point key="canvasLocation" x="4973" y="-499"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="TnE-YF-0Yf"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="brain.head.profile" catalog="system" width="120" height="128"/>
         <image name="folder" catalog="system" width="128" height="96"/>
@@ -382,9 +392,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

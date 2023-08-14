@@ -3,6 +3,7 @@ import UIKit
 class SingleNoteViewController: UIViewController {
     
     // MARK: - Outlets
+    @IBOutlet weak var noteView: UIView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var textTextView: UITextView!
     
@@ -29,6 +30,7 @@ class SingleNoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadNoteFromStorage()
+        configureDesign()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -40,6 +42,22 @@ class SingleNoteViewController: UIViewController {
         super.viewWillAppear(animated)
         
     }
+    
+    // MARK: - Design Configuration
+    private func configureDesign() {
+        // Custom gray color
+        let customGray = UIColor(white: 0.95, alpha: 1.0)
+
+        // For noteView
+        noteView.backgroundColor = customGray
+        noteView.layer.cornerRadius = 5.0
+        noteView.clipsToBounds = true
+        noteView.layer.masksToBounds = false // Da wir einen Schatten verwenden, sollten wir dies auf false setzen
+        
+       
+    }
+
+
     
     // MARK: - Private Utility Methods
     private func loadNoteFromStorage() {
