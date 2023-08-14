@@ -187,6 +187,7 @@
                                             <outlet property="containerView" destination="pc7-Xu-0w9" id="a6e-ww-Bnm"/>
                                             <outlet property="lastEditedLabel" destination="Fal-IC-882" id="fmb-AJ-6MC"/>
                                             <outlet property="titleLabel" destination="jgf-pB-iaN" id="egT-bz-VZr"/>
+                                            <segue destination="8d0-TD-T4z" kind="show" identifier="showNoteDetail" id="YfO-XL-5i5"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -368,6 +369,9 @@
             <point key="canvasLocation" x="4973" y="-499"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="YfO-XL-5i5"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="folder" catalog="system" width="128" height="96"/>
         <image name="note" catalog="system" width="128" height="107"/>

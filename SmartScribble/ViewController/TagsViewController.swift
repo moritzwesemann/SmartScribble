@@ -114,6 +114,8 @@ class TagsViewController: UIViewController, UITableViewDataSource {
             cell.tagLabel.text = tagsArray[indexPath.row]
         }
         
+        cell.selectionStyle = .none
+        
         return cell
     }
     

@@ -105,6 +105,7 @@ class DetailTagViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell.titleLabel.text = note.title
         cell.lastEditedLabel.text = dateFormatter.string(from: note.lastEdited)
+        cell.selectionStyle = .none
         
         return cell
     }
