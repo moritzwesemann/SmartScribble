@@ -8,6 +8,7 @@ import UIKit
 class NewNoteViewController: UIViewController {
 
     // MARK: - Outlets
+    @IBOutlet weak var newNoteView: UIView!
     @IBOutlet weak var noteTitleLabel: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
     @IBOutlet weak var saveButton: UIButton!
@@ -30,6 +31,15 @@ class NewNoteViewController: UIViewController {
     private func configureUI() {
         updateSaveButtonState()
         noteTitleLabel.addTarget(self, action: #selector(titleDidChange), for: .editingChanged)
+        
+        // Custom gray color
+        let customGray = UIColor(white: 0.95, alpha: 1.0)
+
+        // For noteView
+        newNoteView.backgroundColor = customGray
+        newNoteView.layer.cornerRadius = 5.0
+        newNoteView.clipsToBounds = true
+        newNoteView.layer.masksToBounds = false // Da wir einen Schatten verwenden, sollten wir dies auf false setzen
     }
     
     private func loadData() {

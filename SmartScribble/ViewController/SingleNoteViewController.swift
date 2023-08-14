@@ -53,8 +53,6 @@ class SingleNoteViewController: UIViewController {
         noteView.layer.cornerRadius = 5.0
         noteView.clipsToBounds = true
         noteView.layer.masksToBounds = false // Da wir einen Schatten verwenden, sollten wir dies auf false setzen
-        
-       
     }
 
 
