@@ -6,12 +6,13 @@
 //
 import UIKit
 
-class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate {
+class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate, UITabBarControllerDelegate {
     
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setupGestureRecognizers()
+        self.delegate = self
     }
     
     // MARK: - Setup Methods
@@ -40,6 +41,9 @@ class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate {
             allowSwipe = true
         } else if let detailTagController = currentViewController.topViewController as? DetailTagViewController, detailTagController.detailTagCollectionView.contentOffset.y <= 0 {
             allowSwipe = true
+        } else if let singleNoteViewController = currentViewController.topViewController as? SingleNoteViewController,
+                  singleNoteViewController.textTextView.contentOffset.y <= 0 {
+            allowSwipe = true
         }
 
         if allowSwipe {
@@ -54,6 +58,8 @@ class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate {
         } else if sender.direction == .right && selectedIndex > 0 {
             animateToTab(to: selectedIndex - 1)
         }
+        
+        resetSelectedTabToRoot()
     }
     
     // MARK: - Other Utility Methods
@@ -88,6 +94,18 @@ class CustomTabBarController: UITabBarController, UIGestureRecognizerDelegate {
             completion()
         }
     }
+    
+    private func resetSelectedTabToRoot() {
+        guard let navController = selectedViewController as? UINavigationController else { return }
+        navController.popToRootViewController(animated: false)
+    }
+
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        resetSelectedTabToRoot()
+    }
+
+
     
     // MARK: - UIGestureRecognizerDelegate Methods
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
