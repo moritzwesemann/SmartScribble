@@ -26,7 +26,6 @@ class DetailTagViewController: UIViewController, UICollectionViewDataSource, UIC
         super.viewWillAppear(animated)
         loadNotes()
         detailTagCollectionView.reloadData()
-        print(selectedTag)
     }
     
     deinit {
