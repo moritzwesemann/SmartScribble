@@ -20,6 +20,7 @@ class DetailTagViewController: UIViewController, UICollectionViewDataSource, UIC
         setupCollectionView()
         loadNotes()
         registerForNoteNotifications()
+        self.title = selectedTag
     }
     
     override func viewWillAppear(_ animated: Bool) {
