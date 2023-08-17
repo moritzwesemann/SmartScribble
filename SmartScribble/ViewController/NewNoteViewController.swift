@@ -3,22 +3,31 @@
 //  Created by Moritz on 09.08.23.
 
 import UIKit
+import Speech
 
 
-class NewNoteViewController: UIViewController {
+class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
 
     // MARK: - Outlets
     @IBOutlet weak var newNoteView: UIView!
     @IBOutlet weak var noteTitleLabel: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
     @IBOutlet weak var saveButton: UIButton!
-
+    @IBOutlet weak var dictateButton: UIButton!
+    
     // MARK: - Properties
     var notes: [Note] = [] {
         didSet {
             Note.saveToFiles(notes: notes)
         }
     }
+    
+    let audioEngine = AVAudioEngine()
+    let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "de-DE"))
+    let request = SFSpeechAudioBufferRecognitionRequest()
+    var recognitionTask: SFSpeechRecognitionTask?
+    
+    private var recordedText: String?
     
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
@@ -84,5 +93,63 @@ class NewNoteViewController: UIViewController {
         NotificationCenter.default.post(name: NSNotification.Name("didAddNewNote"), object: nil)
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func onButtonPressed(_ sender: Any) {
+        do {
+            try startRecording()
+        } catch {
+            print("Fehler beim Starten der Aufnahme: \(error)")
+        }
+
+        let alertController = UIAlertController(title: "Aufnahme", message: "Sprich jetzt...", preferredStyle: .alert)
+
+        let saveAction = UIAlertAction(title: "Speichern", style: .default) { [weak self] _ in
+            self?.stopRecording()
+            if let transcription = self?.recordedText {
+                self?.noteTextView.text = transcription
+                print("Aufgezeichneter Text: \(transcription)")
+            }
+        }
+        alertController.addAction(saveAction)
+        
+        let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) { [weak self] _ in
+            self?.stopRecording()
+        }
+        alertController.addAction(cancelAction)
+        
+        // Optional: Fügen Sie ein Mikrofonsymbol zum UIAlertController hinzu
+        let microphoneImage = UIImage(systemName: "mic.fill")?.withTintColor(.red, renderingMode: .alwaysOriginal)
+        alertController.setValue(microphoneImage, forKey: "image")
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    
+    func startRecording() throws {
+        let node = audioEngine.inputNode
+        let recordingFormat = node.outputFormat(forBus: 0)
+        node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, _) in
+            self.request.append(buffer)
+        }
+
+        audioEngine.prepare()
+        try audioEngine.start()
+
+        recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { (result, _) in
+            if let transcription = result?.bestTranscription {
+                DispatchQueue.main.async {
+                    self.noteTextView.text = transcription.formattedString
+                }
+            }
+        })
+    }
+
+    
+    func stopRecording() {
+        audioEngine.inputNode.removeTap(onBus: 0)
+        audioEngine.stop()
+        request.endAudio()
+        recognitionTask?.cancel()
     }
 }
