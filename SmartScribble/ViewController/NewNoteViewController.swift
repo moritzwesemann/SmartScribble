@@ -100,30 +100,32 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
             try startRecording()
         } catch {
             print("Fehler beim Starten der Aufnahme: \(error)")
+            return
         }
 
-        let alertController = UIAlertController(title: "Aufnahme", message: "Sprich jetzt...", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Aufnahme", message: "Sprich jetzt...\n\n\n\n\n", preferredStyle: .alert) // Extra newlines for layout space
 
         let saveAction = UIAlertAction(title: "Speichern", style: .default) { [weak self] _ in
             self?.stopRecording()
-            if let transcription = self?.recordedText {
+            if let transcription = alertController.message?.components(separatedBy: "\n").last {
                 self?.noteTextView.text = transcription
-                print("Aufgezeichneter Text: \(transcription)")
+                print("Aufgezeichneter Text: \(self?.recordedText)")
             }
         }
         alertController.addAction(saveAction)
         
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) { [weak self] _ in
             self?.stopRecording()
+            self?.noteTextView.text = ""
         }
         alertController.addAction(cancelAction)
         
-        // Optional: Fügen Sie ein Mikrofonsymbol zum UIAlertController hinzu
         let microphoneImage = UIImage(systemName: "mic.fill")?.withTintColor(.red, renderingMode: .alwaysOriginal)
         alertController.setValue(microphoneImage, forKey: "image")
 
         self.present(alertController, animated: true, completion: nil)
     }
+
 
     
     func startRecording() throws {
@@ -139,11 +141,15 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { (result, _) in
             if let transcription = result?.bestTranscription {
                 DispatchQueue.main.async {
-                    self.noteTextView.text = transcription.formattedString
+                    if let alertController = self.presentedViewController as? UIAlertController {
+                        alertController.message = "Sprich jetzt...\n\n\n\(transcription.formattedString)\n\n"
+                        self.recordedText = transcription.formattedString
+                    }
                 }
             }
         })
     }
+
 
     
     func stopRecording() {
