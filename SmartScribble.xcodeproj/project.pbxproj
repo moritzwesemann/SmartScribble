@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4397BFF52A8F8142006BEA27 /* ApiKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4397BFF42A8F8142006BEA27 /* ApiKey.plist */; };
 		43D2ACE52A893CC800648E1A /* TagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2ACE42A893CC800648E1A /* TagTableViewCell.swift */; };
 		43D2ACE72A89451000648E1A /* DetailTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2ACE62A89451000648E1A /* DetailTagTableViewCell.swift */; };
 		8E29136D2A83900C00EE9BFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29136C2A83900C00EE9BFB /* AppDelegate.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4397BFF42A8F8142006BEA27 /* ApiKey.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKey.plist; sourceTree = "<group>"; };
 		43D2ACE42A893CC800648E1A /* TagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTableViewCell.swift; sourceTree = "<group>"; };
 		43D2ACE62A89451000648E1A /* DetailTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTagTableViewCell.swift; sourceTree = "<group>"; };
 		8E2913692A83900C00EE9BFB /* SmartScribble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartScribble.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +84,7 @@
 				8EFC43D02A850E72005AF8C7 /* ViewController */,
 				8E2913752A83900F00EE9BFB /* Assets.xcassets */,
 				8E29137A2A83900F00EE9BFB /* Info.plist */,
+				4397BFF42A8F8142006BEA27 /* ApiKey.plist */,
 			);
 			path = SmartScribble;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E2913792A83900F00EE9BFB /* LaunchScreen.storyboard in Resources */,
+				4397BFF52A8F8142006BEA27 /* ApiKey.plist in Resources */,
 				8E2913762A83900F00EE9BFB /* Assets.xcassets in Resources */,
 				8E2913742A83900C00EE9BFB /* Main.storyboard in Resources */,
 			);
