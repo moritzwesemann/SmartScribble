@@ -5,7 +5,6 @@
 import UIKit
 import Speech
 
-
 class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
 
     // MARK: - Outlets
@@ -36,19 +35,21 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         loadData()
     }
     
+    // MARK: - API Key
+    func getApiKey() -> String? {
+        if let path = Bundle.main.path(forResource: "ApiKey", ofType: "plist"),
+           let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
+            return dict["API_KEY"] as? String
+        }
+        return nil
+    }
+
     // MARK: - Configuration Methods
     private func configureUI() {
         updateSaveButtonState()
         noteTitleLabel.addTarget(self, action: #selector(titleDidChange), for: .editingChanged)
         
-        // Custom gray color
-        let customGray = UIColor(white: 0.95, alpha: 1.0)
-
-        // For noteView
-        newNoteView.backgroundColor = customGray
-        newNoteView.layer.cornerRadius = 5.0
-        newNoteView.clipsToBounds = true
-        newNoteView.layer.masksToBounds = false // Da wir einen Schatten verwenden, sollten wir dies auf false setzen
+        newNoteView.styleAsNoteView()
     }
     
     private func loadData() {
@@ -67,17 +68,8 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
     }
     
     func extractHashtags(from text: String) -> [String] {
-        var extractedTags: [String] = []
-        
         let words = text.components(separatedBy: .whitespacesAndNewlines)
-        for word in words {
-            if word.hasPrefix("#") {
-                let tag = word.dropFirst()
-                extractedTags.append(String(tag))
-            }
-        }
-        
-        return extractedTags
+        return words.filter { $0.hasPrefix("#") }.map { String($0.dropFirst()) }
     }
     
     // MARK: - User Actions
@@ -85,11 +77,12 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         guard let title = noteTitleLabel.text, !title.isEmpty,
               let textContent = noteTextView.text else { return }
         
-        let extractedTags = extractHashtags(from: textContent)
-        let newNote = Note(title: title, text: textContent, tags: extractedTags, lastEdited: Date())
+        let newNote = Note(title: title,
+                           text: textContent,
+                           tags: extractHashtags(from: textContent),
+                           lastEdited: Date())
         notes.append(newNote)
         
-        // Notify observers of the new note
         NotificationCenter.default.post(name: NSNotification.Name("didAddNewNote"), object: nil)
         
         self.dismiss(animated: true, completion: nil)
@@ -98,64 +91,76 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
     @IBAction func onButtonPressed(_ sender: Any) {
         do {
             try startRecording()
+            presentRecordingAlert()
         } catch {
             print("Fehler beim Starten der Aufnahme: \(error)")
-            return
         }
-
-        let alertController = UIAlertController(title: "Aufnahme", message: "Sprich jetzt...\n\n\n\n\n", preferredStyle: .alert) // Extra newlines for layout space
-
-        let saveAction = UIAlertAction(title: "Speichern", style: .default) { [weak self] _ in
+    }
+    
+    // MARK: - Recording Methods
+    func presentRecordingAlert() {
+        let alertController = UIAlertController(title: "Aufnahme", message: "Sprich jetzt...\n\n\n\n\n", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Speichern", style: .default) { [weak self] _ in
             self?.stopRecording()
             if let transcription = alertController.message?.components(separatedBy: "\n").last {
                 self?.noteTextView.text = transcription
-                print("Aufgezeichneter Text: \(self?.recordedText)")
+                print("Aufgezeichneter Text: \(self?.recordedText ?? "")")
             }
-        }
-        alertController.addAction(saveAction)
+        })
         
-        let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: "Abbrechen", style: .cancel) { [weak self] _ in
             self?.stopRecording()
             self?.noteTextView.text = ""
-        }
-        alertController.addAction(cancelAction)
+        })
         
         let microphoneImage = UIImage(systemName: "mic.fill")?.withTintColor(.red, renderingMode: .alwaysOriginal)
         alertController.setValue(microphoneImage, forKey: "image")
 
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true)
     }
 
-
-    
     func startRecording() throws {
         let node = audioEngine.inputNode
         let recordingFormat = node.outputFormat(forBus: 0)
-        node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, _) in
-            self.request.append(buffer)
+        
+        node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
+            self?.request.append(buffer)
         }
 
         audioEngine.prepare()
         try audioEngine.start()
 
-        recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { (result, _) in
+        recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { [weak self] result, _ in
             if let transcription = result?.bestTranscription {
                 DispatchQueue.main.async {
-                    if let alertController = self.presentedViewController as? UIAlertController {
-                        alertController.message = "Sprich jetzt...\n\n\n\(transcription.formattedString)\n\n"
-                        self.recordedText = transcription.formattedString
-                    }
+                    self?.updateAlertMessage(with: transcription.formattedString)
                 }
             }
         })
     }
-
-
     
     func stopRecording() {
         audioEngine.inputNode.removeTap(onBus: 0)
         audioEngine.stop()
         request.endAudio()
         recognitionTask?.cancel()
+    }
+    
+    func updateAlertMessage(with message: String) {
+        if let alertController = self.presentedViewController as? UIAlertController {
+            alertController.message = "Sprich jetzt...\n\n\n\(message)\n\n"
+            self.recordedText = message
+        }
+    }
+}
+
+extension UIView {
+    func styleAsNoteView() {
+        let customGray = UIColor(white: 0.95, alpha: 1.0)
+        backgroundColor = customGray
+        layer.cornerRadius = 5.0
+        clipsToBounds = true
+        layer.masksToBounds = false // Needed for shadow
     }
 }
