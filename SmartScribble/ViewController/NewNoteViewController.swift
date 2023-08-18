@@ -4,6 +4,7 @@
 
 import UIKit
 import Speech
+import OpenAI
 
 class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
 
@@ -28,21 +29,32 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     private var recordedText: String?
     
+    //KI-Funktion
+    var note = Note(title: "", text: "", tags: [], lastEdited: Date())
+    var openAI:OpenAI?
+    
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         loadData()
+        openAI = OpenAI(apiToken: getApiKey())
+        
+
     }
     
     // MARK: - API Key
-    func getApiKey() -> String? {
+    func getApiKey() -> String {
         if let path = Bundle.main.path(forResource: "ApiKey", ofType: "plist"),
            let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
-            return dict["API_KEY"] as? String
+            return dict["API_KEY"] as! String
         }
-        return nil
+        return "Error"
     }
+    
+    // MARK: - API Abfrage
+  
+
 
     // MARK: - Configuration Methods
     private func configureUI() {
@@ -94,6 +106,74 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
             presentRecordingAlert()
         } catch {
             print("Fehler beim Starten der Aufnahme: \(error)")
+        }
+    }
+    
+    @IBAction func kiButtonPressed(_ sender: Any) {
+        guard let title = noteTitleLabel.text, !title.isEmpty ,
+              let textContent = noteTextView.text else { return }
+        
+        note = Note(title: title, text: textContent, tags: extractHashtags(from: textContent), lastEdited: Date())
+        
+        var noteString = "Title: \(note.title)\nText: \(note.text)\nTags: \(note.tags.joined(separator: ", "))"
+        let promptString = """
+        Gegeben ist eine Notiz. Korrigiere den Titel, strukturiere und formatiere den Inhalt klar, indem du Listen oder Absätze erstellst, wo sinnvoll. Füge auch einen Hashtag zur Kategorisierung hinzu. Das Ergebnis soll im folgenden JSON-ähnlichen Format zurückgegeben werden:
+        {
+          "Titel": "DEIN KORRIGIERTER TITEL",
+          "Inhalt": "DEIN KORRIGIERTER INHALT",
+          "Hashtag": "#DEIN_HASHTAG"
+        }
+        Notiz:
+        \(noteString)
+        """
+
+        
+        
+        let query = CompletionsQuery(model: .textDavinci_003, prompt: promptString, temperature: 0, maxTokens: 200, topP: 1, frequencyPenalty: 0, presencePenalty: 0)
+        openAI!.completions(query: query) { [self] result in
+                    switch result {
+                    case .success(let completionsResult):
+                        if let firstChoice = completionsResult.choices.first {
+                            let answerText = firstChoice.text
+                            print(answerText)
+                            if let jsonData = answerText.data(using: .utf8) {
+                                do {
+                                    if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: String] {
+                                        let newTitle = jsonObject["Titel"]
+                                        let newText = jsonObject["Inhalt"]
+                                        let hashtag = jsonObject["Hashtag"]
+                                        
+                                        DispatchQueue.main.async {
+                                            self.noteTitleLabel.text = newTitle
+                                            self.noteTextView.text = newText! + "\n" + hashtag!
+                                            // Falls Sie den Hashtag auch anzeigen/verwenden möchten, können Sie hier weitere Aktionen hinzufügen
+                                        }
+                                    }
+                                } catch {
+                                    print("Fehler bei der JSON-Konvertierung: \(error.localizedDescription)")
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        print("Es gab einen Fehler: \(error)")
+                    }
+                }
+        
+        
+    }
+    
+    func testKI(){
+        let query = CompletionsQuery(model: .textDavinci_003, prompt: "Überarbeite mir diese Notiz: Einkausliste 1. Banane 2. Apffel 3. SHinken", temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])
+        openAI!.completions(query: query) { result in
+            switch result {
+            case .success(let completionsResult):
+                if let firstChoice = completionsResult.choices.first {
+                    let answerText = firstChoice.text
+                    print(answerText) // Gibt den Text aus
+                }
+            case .failure(let error):
+                print("Es gab einen Fehler: \(error)")
+            }
         }
     }
     

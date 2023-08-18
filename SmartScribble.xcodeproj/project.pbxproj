@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4397BFF52A8F8142006BEA27 /* ApiKey.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4397BFF42A8F8142006BEA27 /* ApiKey.plist */; };
+		4397BFFB2A8F97EF006BEA27 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 4397BFFA2A8F97EF006BEA27 /* OpenAI */; };
 		43D2ACE52A893CC800648E1A /* TagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2ACE42A893CC800648E1A /* TagTableViewCell.swift */; };
 		43D2ACE72A89451000648E1A /* DetailTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2ACE62A89451000648E1A /* DetailTagTableViewCell.swift */; };
 		8E29136D2A83900C00EE9BFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E29136C2A83900C00EE9BFB /* AppDelegate.swift */; };
@@ -51,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4397BFFB2A8F97EF006BEA27 /* OpenAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +163,9 @@
 			dependencies = (
 			);
 			name = SmartScribble;
+			packageProductDependencies = (
+				4397BFFA2A8F97EF006BEA27 /* OpenAI */,
+			);
 			productName = SmartScribble;
 			productReference = 8E2913692A83900C00EE9BFB /* SmartScribble.app */;
 			productType = "com.apple.product-type.application";
@@ -189,6 +194,9 @@
 				Base,
 			);
 			mainGroup = 8E2913602A83900C00EE9BFB;
+			packageReferences = (
+				4397BFF92A8F97EF006BEA27 /* XCRemoteSwiftPackageReference "OpenAI" */,
+			);
 			productRefGroup = 8E29136A2A83900C00EE9BFB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -453,6 +461,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4397BFF92A8F97EF006BEA27 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4397BFFA2A8F97EF006BEA27 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4397BFF92A8F97EF006BEA27 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8E2913612A83900C00EE9BFB /* Project object */;
 }
