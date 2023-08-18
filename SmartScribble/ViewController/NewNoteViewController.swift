@@ -33,14 +33,25 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
     var note = Note(title: "", text: "", tags: [], lastEdited: Date())
     var openAI:OpenAI?
     
+    var uniqueTags: Set<String> = []
+    var tagsArray: [String] = []
+    var notesWithoutTags: Int = 0
+    
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         loadData()
+        updateTagsArray()
         openAI = OpenAI(apiToken: getApiKey())
         
 
+    }
+    
+    func fetchDataFromOpenAI() async throws {
+        let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: "ich hab eine notiz. Kannst du sie überarbeiten und mir eine Überschrift dazu erstellen?")])
+        let result = try await openAI!.chats(query: query)
+        print(result)
     }
     
     // MARK: - API Key
@@ -52,7 +63,27 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         return "Error"
     }
     
-    // MARK: - API Abfrage
+ 
+    private func updateTagsArray() {
+        uniqueTags.removeAll()
+        notesWithoutTags = 0
+        
+        for note in notes {
+            if note.tags.isEmpty {
+                notesWithoutTags += 1
+            } else {
+                uniqueTags.formUnion(note.tags)
+            }
+        }
+        
+        tagsArray = Array(uniqueTags)
+        tagsArray.sort()
+        
+        // Falls es Notizen ohne Tags gibt, den "Ohne Label"-Eintrag am Anfang des Arrays hinzufügen
+        if notesWithoutTags > 0 {
+            tagsArray.insert("Sonstiges", at: 0)
+        }
+    }
   
 
 
@@ -109,72 +140,61 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         }
     }
     
-    @IBAction func kiButtonPressed(_ sender: Any) {
+    @IBAction func kiButtonPressed(_ sender: Any)  {
         guard let title = noteTitleLabel.text, !title.isEmpty ,
               let textContent = noteTextView.text else { return }
         
         note = Note(title: title, text: textContent, tags: extractHashtags(from: textContent), lastEdited: Date())
         
         var noteString = "Title: \(note.title)\nText: \(note.text)\nTags: \(note.tags.joined(separator: ", "))"
+        
         let promptString = """
-        Gegeben ist eine Notiz. Korrigiere den Titel, strukturiere und formatiere den Inhalt klar, indem du Listen oder Absätze erstellst, wo sinnvoll. Füge auch einen Hashtag zur Kategorisierung hinzu. Das Ergebnis soll im folgenden JSON-ähnlichen Format zurückgegeben werden:
+        Ich habe eine Notiz und möchte, dass du sie in eine prägnante und gut strukturierte Form bringst. Der Titel sollte kurz und beschreibend sein, z.B. "Informatik Vorlesung". Der Inhalt sollte weniger aus Fließtext und mehr aus Bereichen bestehen die mit einem Absatz separiert sind, die die Hauptthemen abdecken und Stichpunkte die Aufgaben und informationen zusammenfassen. Bitte organisiere und strukturiere die folgende Notiz entsprechend und füge einen relevanten Hashtag hinzu (bevorzugt aus der Liste: \(uniqueTags)).Achte darauf, dass ich die Anwtwort mithlfe der JSONSerialization Methode in JSON übersetzen kann:
         {
           "Titel": "DEIN KORRIGIERTER TITEL",
           "Inhalt": "DEIN KORRIGIERTER INHALT",
           "Hashtag": "#DEIN_HASHTAG"
         }
-        Notiz:
+        Text:
         \(noteString)
         """
-
         
-        
-        let query = CompletionsQuery(model: .textDavinci_003, prompt: promptString, temperature: 0, maxTokens: 200, topP: 1, frequencyPenalty: 0, presencePenalty: 0)
-        openAI!.completions(query: query) { [self] result in
-                    switch result {
-                    case .success(let completionsResult):
-                        if let firstChoice = completionsResult.choices.first {
-                            let answerText = firstChoice.text
-                            print(answerText)
-                            if let jsonData = answerText.data(using: .utf8) {
-                                do {
-                                    if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: String] {
-                                        let newTitle = jsonObject["Titel"]
-                                        let newText = jsonObject["Inhalt"]
-                                        let hashtag = jsonObject["Hashtag"]
-                                        
-                                        DispatchQueue.main.async {
-                                            self.noteTitleLabel.text = newTitle
-                                            self.noteTextView.text = newText! + "\n" + hashtag!
-                                            // Falls Sie den Hashtag auch anzeigen/verwenden möchten, können Sie hier weitere Aktionen hinzufügen
-                                        }
-                                    }
-                                } catch {
-                                    print("Fehler bei der JSON-Konvertierung: \(error.localizedDescription)")
-                                }
+        Task{
+            do {
+                let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: promptString)])
+                let result = try await openAI!.chats(query: query)
+                if let content = result.choices.first?.message.content {
+                    print(content)
+                    if let jsonData = content.data(using: .utf8) {
+                        do {
+                            if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                                
+                                let newTitel = jsonObject["Titel"] as? String
+                                let newContent = jsonObject["Inhalt"] as? String
+                                let newHashtag = jsonObject["Hashtag"] as? String
+                                
+                                print("Titel:", newTitel ?? "Unbekannt")
+                                print("Inhalt:", newContent ?? "Unbekannt")
+                                print("Hashtag:", newHashtag ?? "Unbekannt")
+                                
+                                noteTitleLabel.text = newTitel
+                                noteTextView.text = newContent! + "\n" + newHashtag!
+                                
+                            } else {
+                                print("Der JSON-String ist nicht korrekt formatiert.")
                             }
+                        } catch {
+                            print("Fehler beim Parsen des JSON:", error)
                         }
-                    case .failure(let error):
-                        print("Es gab einen Fehler: \(error)")
                     }
                 }
-        
-        
-    }
-    
-    func testKI(){
-        let query = CompletionsQuery(model: .textDavinci_003, prompt: "Überarbeite mir diese Notiz: Einkausliste 1. Banane 2. Apffel 3. SHinken", temperature: 0, maxTokens: 100, topP: 1, frequencyPenalty: 0, presencePenalty: 0, stop: ["\\n"])
-        openAI!.completions(query: query) { result in
-            switch result {
-            case .success(let completionsResult):
-                if let firstChoice = completionsResult.choices.first {
-                    let answerText = firstChoice.text
-                    print(answerText) // Gibt den Text aus
-                }
-            case .failure(let error):
-                print("Es gab einen Fehler: \(error)")
+            }
+            catch{
+                print("Fehler beim Abrufen von Daten von OpenAI:", error)
             }
         }
+        
+
     }
     
     // MARK: - Recording Methods
@@ -185,7 +205,6 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
             self?.stopRecording()
             if let transcription = alertController.message?.components(separatedBy: "\n").last {
                 self?.noteTextView.text = transcription
-                print("Aufgezeichneter Text: \(self?.recordedText ?? "")")
             }
         })
         
@@ -225,6 +244,57 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         audioEngine.stop()
         request.endAudio()
         recognitionTask?.cancel()
+        guard let recordedVoiceText = recordedText, !recordedText!.isEmpty else {return}
+        
+        print(uniqueTags)
+        let promptString = """
+        Ich habe eine Notiz und möchte, dass du sie in eine prägnante und gut strukturierte Form bringst. Der Titel sollte kurz und beschreibend sein, z.B. "Informatik Vorlesung". Der Inhalt sollte weniger aus Fließtext und mehr aus Bereichen bestehen die mit einem Absatz separiert sind, die die Hauptthemen abdecken und Stichpunkte die Aufgaben und informationen zusammenfassen. Bitte organisiere und strukturiere die folgende Notiz entsprechend und füge einen relevanten Hashtag hinzu (bevorzugt aus der Liste: \(uniqueTags)).Achte darauf, dass ich die Anwtwort mithlfe der JSONSerialization Methode in JSON übersetzen kann:
+        {
+          "Titel": "DEIN KORRIGIERTER TITEL",
+          "Inhalt": "DEIN KORRIGIERTER INHALT",
+          "Hashtag": "#DEIN_HASHTAG"
+        }
+        Text:
+        \(recordedVoiceText)
+        """
+                
+        print(recordedVoiceText)
+        
+        Task{
+                    do {
+                        let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: promptString)])
+                        let result = try await openAI!.chats(query: query)
+                        if let content = result.choices.first?.message.content {
+                            print(content)
+                            if let jsonData = content.data(using: .utf8) {
+                                do {
+                                    if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                                        
+                                        let newTitel = jsonObject["Titel"] as? String
+                                        let newContent = jsonObject["Inhalt"] as? String
+                                        let newHashtag = jsonObject["Hashtag"] as? String
+                                        
+                                        print("Titel:", newTitel ?? "Unbekannt")
+                                        print("Inhalt:", newContent ?? "Unbekannt")
+                                        print("Hashtag:", newHashtag ?? "Unbekannt")
+                                        
+                                        noteTitleLabel.text = newTitel
+                                        noteTextView.text = newContent! + "\n" + newHashtag!
+                                        updateSaveButtonState()
+                                    } else {
+                                        print("Der JSON-String ist nicht korrekt formatiert.")
+                                    }
+                                } catch {
+                                    print("Fehler beim Parsen des JSON:", error)
+                                }
+                            }
+                        }
+                    }
+                    catch{
+                        print("Fehler beim Abrufen von Daten von OpenAI:", error)
+                    }
+                }
+        
     }
     
     func updateAlertMessage(with message: String) {
