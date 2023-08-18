@@ -44,14 +44,7 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         loadData()
         updateTagsArray()
         openAI = OpenAI(apiToken: getApiKey())
-        
 
-    }
-    
-    func fetchDataFromOpenAI() async throws {
-        let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: "ich hab eine notiz. Kannst du sie überarbeiten und mir eine Überschrift dazu erstellen?")])
-        let result = try await openAI!.chats(query: query)
-        print(result)
     }
     
     // MARK: - API Key
@@ -164,7 +157,6 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
                 let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: promptString)])
                 let result = try await openAI!.chats(query: query)
                 if let content = result.choices.first?.message.content {
-                    print(content)
                     if let jsonData = content.data(using: .utf8) {
                         do {
                             if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
@@ -173,12 +165,8 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
                                 let newContent = jsonObject["Inhalt"] as? String
                                 let newHashtag = jsonObject["Hashtag"] as? String
                                 
-                                print("Titel:", newTitel ?? "Unbekannt")
-                                print("Inhalt:", newContent ?? "Unbekannt")
-                                print("Hashtag:", newHashtag ?? "Unbekannt")
-                                
                                 noteTitleLabel.text = newTitel
-                                noteTextView.text = newContent! + "\n" + newHashtag!
+                                noteTextView.text = newContent! + "\n \n" + newHashtag!
                                 
                             } else {
                                 print("Der JSON-String ist nicht korrekt formatiert.")
@@ -245,10 +233,9 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         request.endAudio()
         recognitionTask?.cancel()
         guard let recordedVoiceText = recordedText, !recordedText!.isEmpty else {return}
-        
-        print(uniqueTags)
+
         let promptString = """
-        Ich habe eine Notiz und möchte, dass du sie in eine prägnante und gut strukturierte Form bringst. Der Titel sollte kurz und beschreibend sein, z.B. "Informatik Vorlesung". Der Inhalt sollte weniger aus Fließtext und mehr aus Bereichen bestehen die mit einem Absatz separiert sind, die die Hauptthemen abdecken und Stichpunkte die Aufgaben und informationen zusammenfassen. Bitte organisiere und strukturiere die folgende Notiz entsprechend und füge einen relevanten Hashtag hinzu (bevorzugt aus der Liste: \(uniqueTags)).Achte darauf, dass ich die Anwtwort mithlfe der JSONSerialization Methode in JSON übersetzen kann:
+        Ich habe eine Notiz und möchte, dass du sie in eine prägnante und gut strukturierte Form bringst. Der Titel sollte kurz und beschreibend sein, z.B. "Informatik Vorlesung". Der Inhalt sollte weniger aus Fließtext und mehr aus Bereichen bestehen die mit einem Absatz separiert sind, die die Hauptthemen abdecken und Stichpunkte die Aufgaben und informationen zusammenfassen. Bitte organisiere und strukturiere die folgende Notiz entsprechend und füge einen relevanten Hashtag hinzu (bevorzugt aus der Liste: \(uniqueTags)).Achte darauf, dass ich die Anwtwort mithilfe der JSONSerialization Methode aus Swift in JSON übersetzen kann:
         {
           "Titel": "DEIN KORRIGIERTER TITEL",
           "Inhalt": "DEIN KORRIGIERTER INHALT",
@@ -257,15 +244,12 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         Text:
         \(recordedVoiceText)
         """
-                
-        print(recordedVoiceText)
         
         Task{
                     do {
                         let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: promptString)])
                         let result = try await openAI!.chats(query: query)
                         if let content = result.choices.first?.message.content {
-                            print(content)
                             if let jsonData = content.data(using: .utf8) {
                                 do {
                                     if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
@@ -274,12 +258,8 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
                                         let newContent = jsonObject["Inhalt"] as? String
                                         let newHashtag = jsonObject["Hashtag"] as? String
                                         
-                                        print("Titel:", newTitel ?? "Unbekannt")
-                                        print("Inhalt:", newContent ?? "Unbekannt")
-                                        print("Hashtag:", newHashtag ?? "Unbekannt")
-                                        
                                         noteTitleLabel.text = newTitel
-                                        noteTextView.text = newContent! + "\n" + newHashtag!
+                                        noteTextView.text = newContent! + "\n \n" + newHashtag!
                                         updateSaveButtonState()
                                     } else {
                                         print("Der JSON-String ist nicht korrekt formatiert.")
