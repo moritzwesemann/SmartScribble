@@ -29,7 +29,7 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     private var recordedText: String?
     
-    //KI-Funktion
+    //KI-Properties
     var note = Note(title: "", text: "", tags: [], lastEdited: Date())
     var openAI:OpenAI?
     
@@ -142,7 +142,7 @@ class NewNoteViewController: UIViewController, SFSpeechRecognizerDelegate {
         var noteString = "Title: \(note.title)\nText: \(note.text)\nTags: \(note.tags.joined(separator: ", "))"
         
         let promptString = """
-        Ich habe eine Notiz und möchte, dass du sie in eine prägnante und gut strukturierte Form bringst. Der Titel sollte kurz und beschreibend sein, z.B. "Informatik Vorlesung". Der Inhalt sollte weniger aus Fließtext und mehr aus Bereichen bestehen die mit einem Absatz separiert sind, die die Hauptthemen abdecken und Stichpunkte die Aufgaben und informationen zusammenfassen. Bitte organisiere und strukturiere die folgende Notiz entsprechend und füge einen relevanten Hashtag hinzu (bevorzugt aus der Liste: \(uniqueTags)).Achte darauf, dass ich die Anwtwort mithlfe der JSONSerialization Methode in JSON übersetzen kann:
+        Ich habe eine Notiz und möchte, dass du sie in eine prägnante und gut strukturierte Form bringst. Der Titel sollte kurz und beschreibend sein. Der Inhalt sollte weniger aus Fließtext und mehr aus Bereichen bestehen die mit einem Absatz separiert sind, die die Hauptthemen abdecken und Stichpunkte die Aufgaben und Informationen zusammenfassen. Bitte organisiere und strukturiere die folgende Notiz entsprechend und füge einen relevanten Hashtag hinzu (bevorzugt aus der Liste: \(uniqueTags)).Achte darauf, dass ich die Anwtwort mithlfe der JSONSerialization Methode in JSON übersetzen kann:
         {
           "Titel": "DEIN KORRIGIERTER TITEL",
           "Inhalt": "DEIN KORRIGIERTER INHALT",

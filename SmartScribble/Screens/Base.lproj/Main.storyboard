@@ -309,7 +309,7 @@
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Titel" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wh3-mh-X1S">
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Titel" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wh3-mh-X1S">
                                         <rect key="frame" x="8" y="8" width="346" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="28"/>
@@ -332,7 +332,11 @@
                                     <action selector="deleteNoteButton:" destination="8d0-TD-T4z" id="IA1-OD-nca"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="brain.head.profile" catalog="system" id="pc3-ww-fKW"/>
+                            <barButtonItem image="brain.head.profile" catalog="system" id="pc3-ww-fKW">
+                                <connections>
+                                    <action selector="kiButtonPressed:" destination="8d0-TD-T4z" id="CNp-GD-n0g"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>

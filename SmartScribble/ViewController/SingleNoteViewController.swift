@@ -1,4 +1,5 @@
 import UIKit
+import OpenAI
 
 class SingleNoteViewController: UIViewController {
     
@@ -11,6 +12,12 @@ class SingleNoteViewController: UIViewController {
     var note: Note?
     var noteID: UUID?
     var noteWasDeleted = false
+    
+    //Ki properties
+    var openAI:OpenAI?
+    var uniqueTags: Set<String> = []
+    var tagsArray: [String] = []
+    var notesWithoutTags: Int = 0
     
     private var notes: [Note] = [] {
         didSet {
@@ -31,6 +38,7 @@ class SingleNoteViewController: UIViewController {
         super.viewDidLoad()
         loadNoteFromStorage()
         configureDesign()
+        openAI = OpenAI(apiToken: getApiKey())
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -41,6 +49,37 @@ class SingleNoteViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+    }
+    
+    // MARK: - API Key
+    func getApiKey() -> String {
+        if let path = Bundle.main.path(forResource: "ApiKey", ofType: "plist"),
+           let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
+            return dict["API_KEY"] as! String
+        }
+        return "Error"
+    }
+    
+ 
+    private func updateTagsArray() {
+        uniqueTags.removeAll()
+        notesWithoutTags = 0
+        
+        for note in notes {
+            if note.tags.isEmpty {
+                notesWithoutTags += 1
+            } else {
+                uniqueTags.formUnion(note.tags)
+            }
+        }
+        
+        tagsArray = Array(uniqueTags)
+        tagsArray.sort()
+        
+        // Falls es Notizen ohne Tags gibt, den "Ohne Label"-Eintrag am Anfang des Arrays hinzufügen
+        if notesWithoutTags > 0 {
+            tagsArray.insert("Sonstiges", at: 0)
+        }
     }
     
     // MARK: - Design Configuration
@@ -115,4 +154,55 @@ class SingleNoteViewController: UIViewController {
             noteWasDeleted = true
         }
     }
+    
+    @IBAction func kiButtonPressed(_ sender: Any) {
+        guard let title = titleTextField.text, !title.isEmpty ,
+                      let textContent = textTextView.text else { return }
+                
+                note = Note(title: title, text: textContent, tags: extractHashtags(from: textContent), lastEdited: Date())
+                
+                var noteString = "Title: \(note!.title)\nText: \(note!.text)\nTags: \(note!.tags.joined(separator: ", "))"
+                
+                let promptString = """
+                Ich habe eine Notiz und möchte, dass du sie in eine prägnante und gut strukturierte Form bringst. Der Titel sollte kurz und beschreibend sein. Der Inhalt sollte weniger aus Fließtext und mehr aus Bereichen bestehen die mit einem Absatz separiert sind, die die Hauptthemen abdecken und Stichpunkte die Aufgaben und Informationen zusammenfassen. Bitte organisiere und strukturiere die folgende Notiz entsprechend und füge einen relevanten Hashtag hinzu (bevorzugt aus der Liste: \(uniqueTags)).Achte darauf, dass ich die Anwtwort mithlfe der JSONSerialization Methode in JSON übersetzen kann:
+                {
+                  "Titel": "DEIN KORRIGIERTER TITEL",
+                  "Inhalt": "DEIN KORRIGIERTER INHALT",
+                  "Hashtag": "#DEIN_HASHTAG"
+                }
+                Text:
+                \(noteString)
+                """
+                
+                Task{
+                    do {
+                        let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: promptString)])
+                        let result = try await openAI!.chats(query: query)
+                        if let content = result.choices.first?.message.content {
+                            if let jsonData = content.data(using: .utf8) {
+                                do {
+                                    if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                                        
+                                        let newTitel = jsonObject["Titel"] as? String
+                                        let newContent = jsonObject["Inhalt"] as? String
+                                        let newHashtag = jsonObject["Hashtag"] as? String
+                                        
+                                        titleTextField.text = newTitel
+                                        textTextView.text = newContent! + "\n \n" + newHashtag!
+                                        
+                                    } else {
+                                        print("Der JSON-String ist nicht korrekt formatiert.")
+                                    }
+                                } catch {
+                                    print("Fehler beim Parsen des JSON:", error)
+                                }
+                            }
+                        }
+                    }
+                    catch{
+                        print("Fehler beim Abrufen von Daten von OpenAI:", error)
+                    }
+                }
+    }
+    
 }
