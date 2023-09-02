@@ -164,7 +164,7 @@ class SingleNoteViewController: UIViewController {
                 var noteString = "Title: \(note!.title)\nText: \(note!.text)\nTags: \(note!.tags.joined(separator: ", "))"
                 
                 let promptString = """
-                Hier ist eine Notiz,die in einer prägnanten und gut strukturierten Form gebracht werden soll. Der Titel soll kurz und beschreibend sein. Der Inhalt soll weniger aus Fließtext und mehr aus Abschnitten bestehen die mit Absätzen separiert sind. Die jeweiligen Abschnitte sollen die Hauptthemen abdecken und z.B. Stichpunktlisten der Aufgaben erstellen und Informationen zusammenfassen. Weiterhin soll ein relevanter Hashtag hinzugefügt werden (bevorzugt aus der Liste: \(uniqueTags)). Achte darauf, dass ich die Anwtwort mithlfe der JSONSerialization Methode in JSON übersetzen kann:
+                Hier ist eine Notiz, die in einer prägnanten und gut strukturierten Form gebracht werden soll. Der Titel soll kurz und beschreibend sein. Der Inhalt soll weniger aus Fließtext und mehr aus Abschnitten bestehen, die mit Absätzen separiert sind. Die jeweiligen Abschnitte sollen die Hauptthemen abdecken und z.B. Stichpunktlisten der Aufgaben erstellen und Informationen zusammenfassen. Weiterhin soll ein relevanter Hashtag hinzugefügt werden (bevorzugt aus der Liste: \(uniqueTags)). Achte darauf, dass die Anwtwort mithilfe der JSONSerialization Methode von Swift in JSON übersetzen kann:
                 {
                   "Titel": "DEIN KORRIGIERTER TITEL",
                   "Inhalt": "DEIN KORRIGIERTER INHALT",
